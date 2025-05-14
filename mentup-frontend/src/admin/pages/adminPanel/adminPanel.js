@@ -42,14 +42,23 @@ const AdminPanel = () => {
     }
   };
 
-  const handleReject = (applicantId) => {
-    // Frontend'den silme işlemi
-    setApplicants((prevApplicants) =>
-      prevApplicants.filter((applicant) => applicant.id !== applicantId)
-    );
+  const handleReject = async (applicantId) => {
+    try {
+      await axios.put(`http://localhost:5001/admin/applications/${applicantId}/reject`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
-    // Formu kapat
-    setSelectedApplicant(null);
+      setApplicants((prevApplicants) =>
+        prevApplicants.filter((applicant) => applicant.id !== applicantId)
+      );
+      setSelectedApplicant(null);
+      alert("Başvuru reddedildi.");
+    } catch (error) {
+      console.error("Başvuru reddedilemedi:", error);
+      alert("Başvuru reddedilirken bir hata oluştu.");
+    }
   };
 
   const handleApprove = async (applicantId) => {

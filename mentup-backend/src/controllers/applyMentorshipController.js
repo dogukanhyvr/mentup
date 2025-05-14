@@ -65,6 +65,7 @@ exports.createMentorApplication = async (req, res) => {
       skills,
       languages,
       type: 'mentor_application',
+      status: 'pending',
     });
 
     res.status(201).json({ message: 'Başvuru başarıyla oluşturuldu.', document });

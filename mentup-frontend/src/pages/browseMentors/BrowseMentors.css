@@ -7,17 +7,21 @@
   overflow-y: auto;
 }
 
+.browse-mentors-form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 60px;
+  margin-top: 50px;
+}
+
 .browse-mentors-form h2 {
   font-size: 30px;
   color: #ffffff;
   font-weight: 500;
-  margin-left: 30px;
-  margin-top: 30px;
 }
 
 .browse-mentors-search-bar {
   display: block;
-  margin-left: 30px;
   margin-top: 30px;
   background-color: #171717;
   border-radius: 8px;
