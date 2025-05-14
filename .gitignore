@@ -93,3 +93,4 @@ mentup-frontend/.cache/
 # Backend specific
 mentup-backend/node_modules/
 mentup-backend/.env
+mentup-backend/uploads/
