@@ -1,0 +1,153 @@
+.mentor-review-container {
+    /* background: linear-gradient(168.18deg, #101828 22.59%, #6938ef 85.64%), linear-gradient(137.87deg, #101828 37.36%, #8619f5 80.62%); */
+    background-color: #121212;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+  }
+  
+  .mentor-review-form-div {
+    display: block;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 100px;
+  }
+  
+  .mentor-review-form-div-title {
+    color: #ffffff;
+    margin-top: 20pxq;
+  }
+  
+  .mentor-review-form {
+    display: inline-block;
+    background-color: #171717;
+    border-radius: 10px;
+    border: 1px solid rgb(59, 59, 59);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 1050px;
+    margin-top: 25px;
+    margin-bottom: 40px;
+  }
+  
+  .mentor-review-form-title {
+    margin-top: 30px;
+    color: #fff;
+  }
+  
+  .mentor-review-form-infos {
+    display: block;
+    margin-left: 30px;
+    margin-top: 30px;
+  }
+  
+  .mentor-review-form label {
+    font-size: 14px;
+    color: #8e9291;
+    font-weight: 500;
+  }
+  
+  .mentor-review-q1,
+  .mentor-review-q2,
+  .mentor-review-q3,
+  .mentor-review-q4,
+  .mentor-review-q5,
+  .mentor-review-q6,
+  .mentor-review-q7 {
+    display: flex;
+    margin-left: 30px;
+    margin-top: 30px;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  .mentor-review-q1-label,
+  .mentor-review-q2-label,
+  .mentor-review-q3-label,
+  .mentor-review-q4-label,
+  .mentor-review-q5-label,
+  .mentor-review-q6-label,
+  .mentor-review-q7-label   {
+    text-align: left; /* Label'lar sol hizalı */
+  }
+  
+  .mentor-review-infos input {
+    font-size: 14px;
+    width: 90%;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid rgb(153, 153, 153);
+    background-color: #f9feff;
+    margin-top: 5px;
+  }
+
+  
+  .mentor-review-button-submit {
+    width: 94%;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #26815b;
+    background-color: #006239;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+  
+  .mentor-review-button-submit:hover {
+    background-color: #217953;
+  }
+  .mentor-review-radio-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  
+  .radio-option {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .mentor-review-q7-textarea {
+    width: 80%;
+    border-radius: 10px;
+    border: 1px solid rgb(59, 59, 59);
+    padding: 10px;
+    font-size: 14px;
+    background-color: #1d1d1d;
+    color: #fff;
+    resize: vertical;
+    margin-top: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .radio-option input[type="radio"] {
+    accent-color: #26815b; /* Mor renkli işaretli buton */
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  .mentor-review-info-text {
+    font-size: 14px;
+    color: #898989;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+  }
+
+  .mentor-review-rating h3 {
+    color: #fff;
+    margin-bottom: 20px;
+  }

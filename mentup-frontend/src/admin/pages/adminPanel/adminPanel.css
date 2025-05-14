@@ -1,0 +1,286 @@
+.admin-panel {
+  background-color: #121212;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 160px;
+}
+
+.admin-panel h2 {
+  color: #fff;
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.applicant-cards {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.applicant-card {
+  background-color: #171717;
+  padding: 15px;
+  width: 500px;
+  height: 100px;
+  border-radius: 10px;
+  border: 1px solid rgb(59, 59, 59);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  overflow: hidden; /* İçerik taşmasını önler */
+}
+
+.applicant-card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #1c1c1c;
+}
+
+.applicant-card-image-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 10px;
+  gap: 10px; /* Resim ve içerik arasındaki boşluk */
+}
+
+.applicant-card-image {
+  width: 80px; /* Sabit genişlik */
+  height: 80px; /* Sabit yükseklik */
+  border-radius: 50%; /* Yuvarlak görünüm */
+  object-fit: cover; /* Resmi düzgün şekilde sığdır */
+  background-color: transparent;
+}
+
+.applicant-card-image-icon {
+  font-size: 80px; /* İkonun boyutunu profil resmiyle eşitle */
+  color: white;
+  width: 80px; /* Sabit genişlik */
+  height: 80px; /* Sabit yükseklik */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* Yuvarlak görünüm */
+  background-color: #2e2e2e; /* Arka plan rengi */
+}
+
+.applicant-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 20px;
+  gap: 10px;
+  overflow: hidden; /* İçerik taşmasını önler */
+}
+
+.applicant-card-name-age-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.applicant-card-name-age-div p {
+  background-color: #2e2e2e;
+  color: #fff;
+  padding: 5px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.applicant-card-skills-languages-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 300px; /* Yazıların genişliğini sınırlayın */
+  word-wrap: break-word; /* Uzun kelimeleri kırın */
+  overflow-wrap: break-word; /* Taşan kelimeleri kırın */
+}
+
+.applicant-card-skills-languages-div p {
+  color: #fff;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.applicant-card h3 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.applicant-card p {
+  color: #fff;
+  /* font-size: 16px; */
+}
+
+.applicant-details {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.applicant-card-email {
+  color: #0c0c0c;
+}
+
+.admin-panel-form-card {
+  position: relative;
+  background-color: #1d1d1d;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgb(59, 59, 59);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90%;
+  overflow-y: auto; /* İçerik taşarsa kaydırma çubuğu ekler */
+  display: flex;
+  flex-direction: column; /* Elemanları dikey hizalar */
+  gap: 15px; /* Elemanlar arasına boşluk ekler */
+}
+
+.admin-panel-form-item {
+  display: flex;
+  flex-direction: column; /* Etiket ve içerik dikey hizalanır */
+  gap: 5px; /* Etiket ve içerik arasında boşluk */
+}
+
+.admin-panel-form-item label {
+  display: block;
+  font-weight: 600;
+  color: #8e9291;
+  font-size: 13px;
+}
+
+.admin-panel-form-item p {
+  font-size: 14px;
+  color: #fff;
+  margin: 0;
+  background-color: #1d1d1d;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgb(59, 59, 59);
+}
+
+.admin-panel-cv-link {
+  color: #38c98d;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.admin-panel-action-buttons {
+  display: flex;
+  justify-content: flex-start; /* Butonları yatayda ayırır */
+  gap: 10px; /* Butonlar arasında boşluk */
+}
+
+.admin-button {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-button.reject {
+  background-color: #8e2e28;
+  color: white;
+}
+
+.admin-button.reject:hover {
+  background-color: #96433d;
+}
+
+.admin-button.approve {
+  background-color: #006239;
+  color: white;
+}
+
+.admin-button.approve:hover {
+  background-color: #39755b;
+}
+
+/* X İkonu */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #ff4d4d;
+}
+
+.admin-panel-name-surname-div,
+.admin-panel-age-diploma-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px; /* İki input arasındaki boşluk */
+}
+
+.admin-panel-name,
+.admin-panel-surname,
+.admin-panel-age,
+.admin-panel-diploma {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 100%; /* Eşit genişlik */
+}
+
+.admin-panel-name-label,
+.admin-panel-surname-label,
+.admin-panel-age-label,
+.admin-panel-diploma-label {
+  font-size: 14px;
+  color: #8e9291;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.admin-panel-name-text,
+.admin-panel-surname-text,
+.admin-panel-age-text,
+.admin-panel-diploma-text,
+.admin-panel-skills-text,
+.admin-panel-languages-text {
+  font-size: 14px;
+  color: #ffffff;
+  background-color: #1d1d1d;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgb(59, 59, 59);
+  margin: 0;
+}

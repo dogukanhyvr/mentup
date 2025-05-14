@@ -1,0 +1,41 @@
+/* Sayfa arka planı */
+.notfound-container {
+  text-align: center;
+  background-color: #121212;
+  height: 100vh; /* Tam ekran yüksekliği */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Başlık */
+.notfound-title {
+  font-size: 36px;
+  color: #fff;
+  margin-bottom: 20px;
+  margin-top: 50px
+}
+
+/* Açıklama metni */
+.notfound-description {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Ana sayfaya dön butonu */
+.notfound-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #28a745; /* Yeşil renk */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.notfound-button:hover {
+  background-color: #218838; /* Hover durumunda daha koyu yeşil */
+}
