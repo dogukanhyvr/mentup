@@ -1,8 +1,10 @@
+const { where } = require('sequelize');
 const { Document, RejectedApplication, User, Profile } = require('../models'); // Profile modelini ekledik
 
 exports.getApplications = async (req, res) => {
   try {
     const applications = await Document.findAll({
+      where: {status: 'pending'}, // Sadece pending olan başvuruları al
       attributes: [
         'id',
         'name',
@@ -113,12 +115,34 @@ exports.approveApplication = async (req, res) => {
     user.role = 'mentor';
     await user.save();
 
-    // Başvuruyu sil
-    await Document.destroy({ where: { id } });
+    // Başvurunun status'unu accepted yap
+    application.status = 'accepted';
+    await application.save();
 
     res.status(200).json({ message: 'Başvuru onaylandı ve kullanıcı mentor olarak güncellendi.' });
   } catch (err) {
     console.error('Başvuru onaylanamadı:', err);
     res.status(500).json({ message: 'Başvuru onaylanırken bir hata oluştu.' });
+  }
+};
+
+exports.rejectApplication = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Başvuruyu bul
+    const application = await Document.findByPk(id);
+    if (!application) {
+      return res.status(404).json({ message: 'Başvuru bulunamadı.' });
+    }
+
+    // Status'u rejected yap
+    application.status = 'rejected';
+    await application.save();
+
+    res.status(200).json({ message: 'Başvuru reddedildi.' });
+  } catch (err) {
+    console.error('Başvuru reddedilemedi:', err);
+    res.status(500).json({ message: 'Başvuru reddedilirken bir hata oluştu.' });
   }
 };

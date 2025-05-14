@@ -31,14 +31,6 @@ const Home = () => {
             <p><strong>100+</strong> Onaylanmış akıl hocası</p>
             <p><strong>4.8/5</strong> Ortalama oturum derecelendirmesi</p>
           </div>
-          <div className='homepage-search-bar'>
-            <div className='homepage-search-input-wrapper'>
-              <input type='text' placeholder='Mentor ara'></input>
-              <button className='homepage-search-icon' onClick={handleSearch}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} style={{color: 'black', fontSize: '16px' }}/>
-              </button>
-            </div>
-          </div>
         </section>
       </main>
       <ChatWidget/>
