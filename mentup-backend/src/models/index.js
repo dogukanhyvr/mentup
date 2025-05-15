@@ -27,13 +27,16 @@ db.Message = require('./message')(sequelize, DataTypes);
 db.Document = require('./document')(sequelize, DataTypes);
 db.Profile = require('./profile')(sequelize, DataTypes);
 db.User = require('./User')(sequelize, DataTypes); // EN SON
+db.Mentor = require('./mentors')(sequelize, DataTypes); // 🟢 Bunu EKLE
 
 // 🔴 EN SON User gelsin çünkü diğerlerine bağlı
 db.User = require('./User')(sequelize, DataTypes);
 
 // İlişkileri çalıştır
-Object.values(db).forEach((model) => {
-  if (model.associate) model.associate(db);
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
 });
 
 // Debug amaçlı model kontrolü

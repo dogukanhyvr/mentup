@@ -1,16 +1,41 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./BrowseMentors.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+
+// CustomDropdown sadece dropdown menü için
+const CustomDropdownMenu = ({ options, selectedOptions, setSelectedOptions }) => {
+  const handleOptionClick = (option) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+
+  return (
+    <div className="custom-dropdown-menu">
+      {options.map((option, i) => (
+        <div
+          key={i}
+          className={`custom-dropdown-option${selectedOptions.includes(option) ? " selected" : ""}`}
+          onClick={() => handleOptionClick(option)}
+        >
+          {option}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const BrowseMentors = () => {
-  const [openMenuIndex, setOpenMenuIndex] = useState(null); // Menülerin hangi index'inin açık olduğunu takip eder.
-  const [selectedSkill, setSelectedSkill] = useState(""); // Seçilen beceri
-  const [selectedValues, setSelectedValues] = useState({
-    price: "",
-    sessionDuration: "",
-  });
+  const [loading, setLoading] = useState(false);
+  const [openMenuIndex, setOpenMenuIndex] = useState(null);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [mentors, setMentors] = useState([]);
   const [showScheduler, setShowScheduler] = useState(false);
   const [selectedDate, setSelectedDate] = useState({
     month: "",
@@ -18,97 +43,96 @@ const BrowseMentors = () => {
     time: "",
   });
 
-  const menuRef = useRef(null); // Menüleri kapsayan referans
-
-  const toggleMenu = (index) => {
-    setOpenMenuIndex(openMenuIndex === index ? null : index); // Aynı menüye tekrar tıklanırsa kapatılır
-  };
-
-  const handleSelection = (menuType, value) => {
-    setSelectedValues({
-      ...selectedValues,
-      [menuType]: value,
-    });
-    setOpenMenuIndex(null); // Seçim yapıldığında menüyü kapat
-  };
-
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setOpenMenuIndex(null); // Menünün dışına tıklanınca menüyü kapat
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const menuRef = useRef(null);
 
   const menuData = [
     {
       label: "Beceri Alanları",
-      options: ["Yazılım Geliştirme", "Web Teknolojileri" , "Mobil Teknolojiler","Oyun Geliştirme","Veritabanı ve Backend" , "Yapay Zeka & Veri Bilimi" , "Veri Analizi & BI" , "Tasarım & UI/UX" , "Pazarlama & İş Geliştirme"],
+      options: [
+        "Yazılım Geliştirme", "Web Teknolojileri", "Mobil Teknolojiler",
+        "Oyun Geliştirme", "Veritabanı ve Backend", "Yapay Zeka & Veri Bilimi",
+        "Veri Analizi & BI", "Tasarım & UI/UX", "Pazarlama & İş Geliştirme"
+      ],
       type: "skills",
     },
     {
       label: "Yazılım Dilleri",
-      options: ["C", "C++", "C#", "CSS", "HTML" , "Java" , "JavaScript" , "Kotlin" , "PHP" , "Python" , "R" , "TypeScript"] ,
-      type: "skills",
-    },
-    {
-      label: "Diller",
-      options: ["Almanca" , "Arapça" , "Çince (Mandarin)" , "Fransızca" , "Hintçe" , "İngilizce" , "İspanyolca" , "İtalyanca" , "Japonca" , "Korece" , "Portekizce" , "Rusça" , "Türkçe"],
-      type: "language",
-    },
+      options: [
+        "C", "C++", "C#", "CSS", "HTML", "Java", "JavaScript", "Kotlin",
+        "PHP", "Python", "R", "TypeScript"
+      ],
+      type: "languages",
+    }
   ];
 
-  const gameMentors = [
-    {
-      name: "William Johnson",
-      title: "Web Geliştirici",
-      description: "Unity ve Unreal Engine'de deneyimli, mobil ve PC oyunları geliştirmiştir.",
-      image: require("../../images/mentor.png"), // kendi resim yolunuza göre ayarlayın
-    },
-  ];
-
-  const handleSearch = () => {
-    console.log("Arama işlemi başlatıldı!");
+  // Menü açma/kapama
+  const toggleMenu = (index) => {
+    setOpenMenuIndex(openMenuIndex === index ? null : index);
   };
+
+  // Menü dışına tıklanınca kapat
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenuIndex(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Filtreli mentorları çek
+  useEffect(() => {
+    if (selectedSkills.length === 0 && selectedLanguages.length === 0 && !searchTerm) {
+      setMentors([]);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    axios
+      .get("http://localhost:5001/mentor/filterMentors", {
+        params: {
+          skills: [...selectedSkills, ...selectedLanguages].join(","),
+          // skills: selectedSkills.join(","),
+          // languages: selectedLanguages.join(","),
+          search: searchTerm
+        }
+      })
+      .then((res) => {
+        setMentors(res.data);
+        setLoading(false);
+        console.log("Gelen mentorlar:", res.data);
+      })
+      .catch((err) => {
+        setMentors([]);
+        setLoading(false);
+        console.error("Mentorlar alınamadı:", err);
+      });
+  }, [selectedSkills, selectedLanguages, searchTerm]);
+
+  const handleSearchInput = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearch = () => {};
 
   const handleScheduleClick = () => {
-    setShowScheduler(!showScheduler); // Görüşme planla paneli açma/kapama
+    setShowScheduler(!showScheduler);
   };
-
   const handleDateChange = (e) => {
     setSelectedDate({
       ...selectedDate,
       [e.target.name]: e.target.value,
     });
   };
-
   const handleConfirm = () => {
-    console.log("Planlanan Görüşme:", selectedDate);
+    alert("Planlanan Görüşme: " + JSON.stringify(selectedDate));
     setShowScheduler(false);
-  };
-
-  // selectedSkill'in doğru şekilde ayarlandığını kontrol et
-  const handleSkillSelection = (menuType, value) => {
-    console.log("Selected Skill:", value); // console.log ekleyerek hangi becerinin seçildiğini kontrol et
-    setSelectedValues({
-      ...selectedValues,
-      [menuType]: value,
-    });
-    if (menuType === "skills") {
-      setSelectedSkill(value); // Sadece beceri seçimi için ayrı takip
-    }
-    setOpenMenuIndex(null);
   };
 
   return (
     <div className="browse-mentors-container">
-      <header>
-      </header>
+      <header></header>
       <main>
         <div className="browse-mentors-form-div">
           <div className="browse-mentors-form">
@@ -118,6 +142,8 @@ const BrowseMentors = () => {
                 <input
                   type="text"
                   placeholder="Ada veya anahtar kelimeye göre arama yapın"
+                  value={searchTerm}
+                  onChange={handleSearchInput}
                 />
                 <button
                   className="browse-mentors-search-icon"
@@ -143,16 +169,17 @@ const BrowseMentors = () => {
                         </span>
                       </button>
                       {openMenuIndex === index && (
-                        <ul className={`browse-mentors-dropdown-menu-${menu.type}`}>
-                          {menu.options.map((option, i) => (
-                            <li
-                              key={i}
-                              onClick={() => handleSkillSelection(menu.type, option)}
-                            >
-                              {option}
-                            </li>
-                          ))}
-                        </ul>
+                        <div style={{ minWidth: 200 }}>
+                          <CustomDropdownMenu
+                            options={menu.options}
+                            selectedOptions={
+                              menu.type === "skills" ? selectedSkills : selectedLanguages
+                            }
+                            setSelectedOptions={
+                              menu.type === "skills" ? setSelectedSkills : setSelectedLanguages
+                            }
+                          />
+                        </div>
                       )}
                     </div>
                   ))}
@@ -160,27 +187,49 @@ const BrowseMentors = () => {
               </div>
             </div>
 
-            {/* Web Geliştirme seçildiğinde mentorların gözükmesini sağla */}
-            {selectedSkill === "Web Geliştirme" && (
-              <div className="mentor-list-container">
-                {gameMentors.map((mentor, index) => (
-                  <div key={index} className="mentor-card" style={{ display: "flex", gap: "16px" }}>
+            {/* Mentor kartları */}
+            <div className="mentor-list-container">
+              {loading ? (
+                <div style={{ color: "#fff", marginTop: "32px" }}>Yükleniyor...</div>
+              ) : mentors.length === 0 && (selectedSkills.length > 0 || selectedLanguages.length > 0 || searchTerm) ? (
+                <div style={{ color: "#fff", marginTop: "32px" }}>Mentor bulunamadı.</div>
+              ) : (
+                mentors.map((mentor, index) => (
+                  <div key={index} className="mentor-card">
                     <div
                       className="mentor-image"
-                      style={{ backgroundImage: `url(${mentor.image})` }}
+                      style={{
+                        backgroundImage:
+                          mentor.profile && mentor.profile.photo_url
+                            ? `url(${mentor.profile.photo_url})`
+                            : mentor.short_photo_url
+                            ? `url(${mentor.short_photo_url})`
+                            : `url('/images/mentor.png')`,
+                        width: 100,
+                        height: 100,
+                        borderRadius: "50%",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center"
+                      }}
                     ></div>
                     <div className="mentor-info">
-                      <h3>{mentor.name}</h3>
-                      <p className="mentor-title">{mentor.title}</p>
-                      <p className="mentor-description">{mentor.description}</p>
+                      <h3>{mentor.name} {mentor.surname}</h3>
+                      <p className="mentor-title">
+                        {mentor.industries
+                          ? JSON.parse(mentor.industries).join(", ")
+                          : ""}
+                      </p>
+                      <p className="mentor-title">
+                        {mentor.skills
+                          ? JSON.parse(mentor.skills).join(", ")
+                          : ""}
+                      </p>
+                      <p className="mentor-description">{mentor.bio}</p>
                     </div>
-
-                    {/* Görüşme Planla Butonu ve Seçim Alanı */}
                     <div className="mentor-actions">
                       <button onClick={handleScheduleClick} className="schedule-button">
                         Görüşme Planla
                       </button>
-
                       {showScheduler && (
                         <div className="scheduler-panel">
                           <select name="month" onChange={handleDateChange} defaultValue="">
@@ -188,14 +237,12 @@ const BrowseMentors = () => {
                             <option value="Nisan">Nisan</option>
                             <option value="Mayıs">Mayıs</option>
                           </select>
-
                           <select name="day" onChange={handleDateChange} defaultValue="">
                             <option value="" disabled>Gün Seç</option>
                             {[...Array(31)].map((_, i) => (
                               <option key={i} value={i + 1}>{i + 1}</option>
                             ))}
                           </select>
-
                           <select name="time" onChange={handleDateChange} defaultValue="">
                             <option value="" disabled>Saat Seç</option>
                             <option value="10:00">10:00-10.30</option>
@@ -203,15 +250,14 @@ const BrowseMentors = () => {
                             <option value="16:00">16:00-16.30</option>
                             <option value="19:00">19:00-19.30</option>
                           </select>
-
                           <button onClick={handleConfirm}>Onayla</button>
                         </div>
                       )}
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                ))
+              )}
+            </div>
           </div>
         </div>
       </main>

@@ -54,11 +54,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    skills: {
+    industries: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    languages: {
+    skills: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -66,6 +66,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
+    status: {
+      type: DataTypes.ENUM('pending', 'accepted', 'rejected'),
+      defaultValue: 'pending',
+      allowNull: false,
+    }
   }, {
     tableName: 'documents',
     timestamps: false,

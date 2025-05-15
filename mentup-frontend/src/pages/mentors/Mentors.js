@@ -1,36 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Mentors.css';
 
 const Mentors = () => {
+  const [mentors, setMentors] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5001/mentor/getMentors')
+      .then(res => setMentors(res.data))
+      .catch(err => console.error("Mentorlar alınamadı:", err));
+  }, []);
+
   return (
     <div className='mentors-container'>
-      <header>
-      </header>
+      <header></header>
       <main>
         <div className='mentors-section'>
           <h1 className='mentors-section-title'>Mentorlarımız</h1>
           <div className='mentor-cards'>
-            <div className='mentor-card1'>
-              <div className='mentor-card1-image'/>
-                <h2 className='mentor-name1'>William Johnson</h2>
-                <h3 className='mentor-job1'>Web Tasarımcı</h3>
-                <p className='mentor-info1'>William, 10 yılı aşkın deneyime sahip bir web geliştirici, yazılım mühendisi ve mentordur.
-                  Web teknolojileri ve yapay zeka alanlarında uzmanlaşmış, birçok şirkette proje geliştirmiştir.
-                  Mentee'lerine yazılım geliştirme süreçlerini ve sektörde nasıl ilerleyebileceklerini öğretir.
-                </p>
-            </div>
-            <div className='mentor-card2'>
-              <div className='mentor-card2-image'/>
-                <h2 className='mentor-name2'>Anastasia Petrov</h2>
-                <h3 className='mentor-job2'>Oyun Geliştirici</h3>
-                <p className='mentor-info2'>Anastasia, 10 yılı aşkın deneyime sahip bir oyun geliştirici, yazılım mühendisi ve mentordur.
-                  Unity ve Unreal Engine gibi oyun motorlarında uzmanlaşmış, birçok projede ekip liderliği yapmıştır.
-                  Mentee'lerine oyun geliştirme sürecini, kodlama standartlarını ve sektörde nasıl ilerleyebileceklerini öğretir.</p>
+            {mentors.map((mentor) => (
+              <div className='mentor-card' key={mentor.id}>
+                <div
+                  className='mentor-card-image'
+                  style={{
+                    backgroundImage: mentor.profile?.photo_url
+                      ? `url(${mentor.profile.photo_url})`
+                      : undefined,
+                  }}
+                />
+                <h2 className='mentor-name'>{mentor.name} {mentor.surname}</h2>
+                {/* Meslek bilgisi yoksa bu satırı kaldırabilirsin */}
+                {/* <h3 className='mentor-job'>Web Tasarımcı</h3> */}
+                <p className='mentor-info'>{mentor.profile?.bio}</p>
               </div>
-            </div>
+            ))}
           </div>
+        </div>
       </main>
     </div>
   );
 };
+
 export default Mentors;

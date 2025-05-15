@@ -38,7 +38,8 @@ exports.createMentorApplication = async (req, res) => {
     const existingApplication = await Document.findOne({
       where: {
         user_id: userId,
-        type: 'mentor_application'
+        type: 'mentor_application',
+        status: 'pending'
       }
     });
 
@@ -82,15 +83,12 @@ exports.checkApplicationStatus = async (req, res) => {
     const existingApplication = await Document.findOne({
       where: {
         user_id: userId,
-        type: 'mentor_application'
+        type: 'mentor_application',
+        status: 'pending'
       }
     });
 
-    if (existingApplication) {
-      return res.status(200).json({ hasApplied: true });
-    }
-
-    res.status(200).json({ hasApplied: false });
+    res.status(200).json({ hasApplied: !!existingApplication });
   } catch (err) {
     console.error('Başvuru durumu kontrol edilemedi:', err);
     res.status(500).json({ message: 'Bir hata oluştu.', error: err.message });

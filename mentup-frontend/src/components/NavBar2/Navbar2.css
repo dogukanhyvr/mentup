@@ -217,6 +217,7 @@
 
 /* Menü bağlantı tasarımı */
 .navbar-secondary-dropdown-menu-settings,
+.navbar-secondary-dropdown-menu-availability,
 .navbar-secondary-dropdown-menu-logout {
   display: flex;
   flex-direction: row;

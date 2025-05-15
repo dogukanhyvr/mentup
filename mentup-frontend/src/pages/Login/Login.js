@@ -45,11 +45,15 @@ const Login = () => {
         localStorage.setItem("role", data.user.role); // Rolü kaydediyoruz
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        if (data.user.role === "admin") {
-          navigate("/adminpanel");
-        } else {
-          navigate("/menteeprofile");
-        }
+      if (data.user.role === "admin") {
+        navigate("/adminpanel");
+      } else if (data.user.role === "mentee") {
+        navigate("/menteeprofile");
+      } else if (data.user.role === "mentor") {
+        navigate("/mentorprofile");
+      } else {
+        setMessage("Bilinmeyen kullanıcı rolü!");
+      }
       } else {
         setMessage("Token alınamadı.");
       }

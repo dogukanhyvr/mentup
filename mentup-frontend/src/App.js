@@ -22,25 +22,48 @@ import AdminPanel from './admin/pages/adminPanel/adminPanel';
 import ForgotPassword from './pages/forgotPassword/ForgotPassword';
 import ProtectedRoute from './components/ProtectedRoute'; // ProtectedRoute bileşenini ekleyin
 import NotFound from './pages/NotFound/NotFound';
+import MentorProfile from './mentorPages/mentorProfile/mentorProfile';
+import MentorAccountSettings from './mentorPages/mentorAccountSettings/mentorAccountsettings';
+import Navbar3 from './components/NavBar3/Navbar3';
+import MentorAppointments from './mentorPages/mentorAppointments/mentorAppointments';
+import MentorAvailabilitySettings from './mentorPages/mentorAvailabilitySettings/mentorAvailabilitySettings';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const location = useLocation(); // Mevcut route'u almak için
+  const [role, setRole] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
-    // Kullanıcının oturum açıp açmadığını kontrol et
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token); // Eğer token varsa true, yoksa false
-  }, []);
+    setIsLoggedIn(!!token);
+    if (token) {
+      // Rolü localStorage'dan al
+      const storedRole = localStorage.getItem('role');
+      setRole(storedRole);
+    } else {
+      setRole(null);
+    }
+  }, [location]);
 
-  // Navbar'ı gizlemek istediğiniz route'lar
   const noNavbarRoutes = ['/login', '/signup', '/forgotpassword'];
+
+  // Navbar seçimi
+  let navbarComponent = null;
+  if (!noNavbarRoutes.includes(location.pathname)) {
+    if (!isLoggedIn) {
+      navbarComponent = <NavBar />;
+    } else if (role === "mentee") {
+      navbarComponent = <Navbar2 />;
+    } else if (role === "mentor") {
+      navbarComponent = <Navbar3 />;
+    } else if (role === "admin") {
+      navbarComponent = <Navbar2 />; // Şimdilik admin için de Navbar2
+    }
+  }
 
   return (
     <div className="App">
-      {/* Navbar'ı sadece belirli route'larda göster */}
-      {!noNavbarRoutes.includes(location.pathname) && (isLoggedIn ? <Navbar2 /> : <NavBar />)}
-
+      {navbarComponent}
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<Home />} />
@@ -58,7 +81,6 @@ function App() {
         <Route path="/appointments" element={<Appointments />} />
         <Route path="/mentors" element={<Mentors />} />
         <Route path="/videochat" element={<VideoChat />} />
-        {/* AdminPanel rotasını ProtectedRoute ile koruyun */}
         <Route
           path="/adminpanel"
           element={
@@ -69,6 +91,13 @@ function App() {
         />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/notfound" element={<NotFound />} />
+        <Route path="/mentorprofile" element={<MentorProfile />} />
+        <Route
+          path="/mentoraccountsettings"
+          element={<MentorAccountSettings />}
+        />
+        <Route path="/mentorappointments" element={<MentorAppointments />} />
+          <Route path="/mentoravailabilitysettings" element={<MentorAvailabilitySettings />} />
       </Routes>
     </div>
   );

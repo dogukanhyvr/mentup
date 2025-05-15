@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './Navbar2.css';
+import '../NavBar2/Navbar2.css'; // Aynı stilleri kullanıyoruz
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMessage, faBell, faAngleDown, faGear, faArrowRightFromBracket, faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { faMessage, faBell, faAngleDown, faGear, faArrowRightFromBracket, faCircleUser, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const NavBar2 = () => {  
+const Navbar3 = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [userName, setUserName] = useState('');
   const [userSurname, setUserSurname] = useState('');
@@ -21,12 +21,11 @@ const NavBar2 = () => {
         });
         setUserName(response.data.name);
         setUserSurname(response.data.surname);
-        setPhoto_url(response.data.profile?.photo_url || null); // Profil resmi yoksa null olarak ayarla
+        setPhoto_url(response.data.profile?.photo_url || null);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
     };
-
     fetchUserProfile();
   }, []);
 
@@ -34,15 +33,13 @@ const NavBar2 = () => {
     try {
       await axios.post(
         'http://localhost:5001/auth/logout',
-        {}, // Boş bir body gönderiyoruz
+        {},
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
-
-      // Token'ı temizle ve kullanıcıyı giriş sayfasına yönlendir
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       navigate('/login');
@@ -77,14 +74,10 @@ const NavBar2 = () => {
             <span>MentUp</span>
           </a>
         </div>
-        <div className="navbar-secondary-apply-mentorship">
-          <a href="/applymentorship">Mentorluk İçin Başvur</a>
-        </div>
         <div className="navbar-secondary-items-right-col">
           <div className="navbar-secondary-items">
-            <a href="/browsementors">Mentorlara Göz At</a>
-            <a href="/mentors">Mentorlarımız</a>
-            <a href="/appointments">Görüşmelerim</a>
+            <a href="/mentorappointments">Görüşmelerim</a>
+            <a href="#">Görüşme Talepleri</a>
             <a href="/contact">İletişim</a>
             <a href="/aboutus">Hakkımızda</a>
           </div>
@@ -123,7 +116,7 @@ const NavBar2 = () => {
                   <li>
                     <a 
                       className="navbar-secondary-profile-info"
-                      href='/menteeprofile'
+                      href='/mentorprofile'
                     >
                       <div
                         className="navbar-secondary-profile-dropdown-image"
@@ -149,13 +142,25 @@ const NavBar2 = () => {
                   <li>
                     <a
                       className="navbar-secondary-dropdown-menu-settings"
-                      href="/accountsettings"
+                      href="/mentoraccountsettings"
                     >
                       <FontAwesomeIcon
                         icon={faGear}
                         style={{ color: "white", marginRight: "10px" }}
                       />
                       Hesap Ayarları
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="navbar-secondary-dropdown-menu-availability"
+                      href="/mentoravailabilitysettings"
+                    >
+                      <FontAwesomeIcon
+                        icon={faCalendarDays}
+                        style={{ color: "white", marginRight: "10px" }}
+                      />
+                      Uygunluk Ayarları
                     </a>
                   </li>
                   <li>
@@ -180,4 +185,4 @@ const NavBar2 = () => {
   );
 };
 
-export default NavBar2;
+export default Navbar3

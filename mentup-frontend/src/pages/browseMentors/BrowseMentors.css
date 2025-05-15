@@ -2,22 +2,24 @@
   /* background: linear-gradient(168.18deg, #101828 22.59%, #6938ef 85.64%), linear-gradient(137.87deg, #101828 37.36%, #8619f5 80.62%); */
   background-color: #121212;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
-  height: 100vh;
   width: 100%;
+  min-height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .browse-mentors-form {
   display: flex;
   flex-direction: column;
-  margin-left: 60px;
   margin-top: 50px;
+  margin-bottom: 80px;
 }
 
 .browse-mentors-form h2 {
   font-size: 30px;
   color: #ffffff;
   font-weight: 500;
+  margin-left: 60px;
 }
 
 .browse-mentors-search-bar {
@@ -25,8 +27,9 @@
   margin-top: 30px;
   background-color: #171717;
   border-radius: 8px;
-  width: 40%;
+  width: 30%;
   height: 110px;
+  margin-left: 60px;
 }
 
 .browse-mentors-search-input-wrapper {
@@ -141,46 +144,71 @@
   background-color: #171717;
 }
 
+/* Mentor kartları için Mentors.css ile aynı stiller */
 .mentor-list-container {
-  margin: 30px;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 50%;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 50px;
 }
 
 .mentor-card {
-  display: flex;
-  background-color: #fff;
+  background-color: #171717;
+  padding: 40px 30px;
   border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(59, 59, 59);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 250px;
+  min-height: 370px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
 .mentor-image {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  background-image: url('../../images/mentor.png');
   background-size: cover;
-  background-position: center;
-  margin-right: 20px;
+  background-position: center; 
+  margin-bottom: 18px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.mentor-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #d7d7d7;
+  text-align: justify;
+  min-height: 60px;
+  width: 100%;
 }
 
 .mentor-info h3 {
   margin: 0;
-  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
 }
 
 .mentor-title {
-  font-size: 14px;
-  color: #777;
-  margin: 5px 0;
+  margin-top: 6px;
+  font-weight: 400;
+  color: #8e9291;
+  text-align: center;
 }
 
 .mentor-description {
+  margin-top: 10px;
   font-size: 14px;
-  color: #333;
+  color: #d7d7d7;
+  text-align: justify;
+  min-height: 60px;
 }
 
 .schedule-button {
@@ -190,6 +218,7 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .schedule-button:hover {

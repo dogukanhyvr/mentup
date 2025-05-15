@@ -1,16 +1,20 @@
-.mentors-container {
-  /* background: linear-gradient(168.18deg, #101828 22.59%, #6938ef 85.64%), linear-gradient(137.87deg, #101828 37.36%, #8619f5 80.62%); */
-  background-color: #121212;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+html, body {
+  height: 100%;
   margin: 0;
-  width: 100%;
-  height: 100vh;
-  overflow-y: auto;
+  padding: 0;
+  background-color: #121212;
 }
 
-.menors-section {
+.mentors-container {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+  width: 100%;
+  min-height: 100vh;
+}
+
+.mentors-section {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
 }
 
 .mentors-section-title {
@@ -21,97 +25,57 @@
 
 .mentor-cards {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  margin-bottom: 100px;
 }
 
-.mentor-card1 {
+.mentor-card {
   background-color: #171717;
-  padding: 40px;
-  margin-left: 40px;
+  padding: 40px 30px;
   border-radius: 10px;
   border: 1px solid rgb(59, 59, 59);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  width: 15%;
-  height: 370px;
+  width: 250px;
+  min-height: 370px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
-.mentor-card1-image {
+.mentor-card-image {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   background-image: url('../../images/mentor.png');
   background-size: cover;
   background-position: center; 
-  margin-right: 20px;
+  margin-bottom: 18px;
   flex-shrink: 0;
-  justify-content: center;
-  align-items: center;
   align-self: center;
 }
 
-.mentor-name1 {
+.mentor-name {
   margin-top: 10px;
   font-weight: 500;
   color: #fff;
+  font-size: 20px;
+  text-align: center;
 }
 
-.mentor-job1 {
-  margin-top: 6px;
-  font-weight: 400;
-  color: #8e9291
-}
-
-.mentor-info1 {
+.mentor-info {
   margin-top: 10px;
   font-size: 14px;
   color: #d7d7d7;
   text-align: justify;
+  min-height: 60px;
 }
 
-.mentor-card2 {
-  background-color: #171717;
-  padding: 40px;
-  margin-left: 40px;
-  border-radius: 10px;
-  border: 1px solid rgb(59, 59, 59);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  width: 15%;
-  height: 370px;
-  display: flex;
-  flex-direction: column;
-}
-
-.mentor-card2-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-image: url('../../images/mentor2.png');
-  background-size: cover;
-  background-position: center; 
-  margin-right: 20px;
-  flex-shrink: 0;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-}
-
-.mentor-name2 {
-  margin-top: 10px;
-  font-weight: 500;
-  color: #fff;
-}
-
-.mentor-job2 {
+/* Eğer meslek alanı eklenirse */
+.mentor-job {
   margin-top: 6px;
   font-weight: 400;
-  color: #8e9291
-}
-
-.mentor-info2 {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #d7d7d7;
-  text-align: justify;
+  color: #8e9291;
+  text-align: center;
 }

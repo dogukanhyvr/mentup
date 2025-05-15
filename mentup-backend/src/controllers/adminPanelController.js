@@ -140,6 +140,13 @@ exports.rejectApplication = async (req, res) => {
     application.status = 'rejected';
     await application.save();
 
+    // Kullanıcıyı bul ve rolünü mentee olarak güncelle
+    const user = await User.findByPk(application.user_id);
+    if (user && user.role === 'pending') {
+      user.role = 'mentee';
+      await user.save();
+    }
+
     res.status(200).json({ message: 'Başvuru reddedildi.' });
   } catch (err) {
     console.error('Başvuru reddedilemedi:', err);
