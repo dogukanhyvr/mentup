@@ -1,25 +1,42 @@
-import React from "react";
-import CalendarComponent from "../../components/Calendar/calendar";
+import React, { useState } from "react";
+import axios from "axios";
 import "./mentorAvailabilitySettings.css";
+import Calendar from "../../components/Calendar/calendar";
 
 const MentorAvailabilitySettings = () => {
-  const handleSlotsChange = (slots) => {
-    console.log("Seçilen slotlar:", slots);
-    // Buradan API'ye gönderme işlemi yapabilirsin
+  const [slots, setSlots] = useState([]);
+
+  // Takvimden slotlar değiştikçe güncelle
+  const handleSlotsChange = (updatedSlots) => {
+    setSlots(updatedSlots);
+  };
+
+  // Kaydet butonuna basınca API'ye gönder
+  const handleSave = async () => {
+    // Slotları backend formatına çevir
+    const formattedSlots = slots.map((slot) => ({
+      date: slot.start.toISOString().slice(0, 10),
+      start_time: slot.start.toTimeString().slice(0, 5),
+      end_time: slot.end.toTimeString().slice(0, 5),
+    }));
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:5001/mentor/save",
+        { slots: formattedSlots },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Müsaitlikler kaydedildi!");
+    } catch (err) {
+      alert("Kayıt sırasında hata oluştu!");
+      console.error(err);
+    }
   };
 
   return (
     <div className="mentor-availability-settings-container">
-      <h1 className="mentor-availability-settings-title">Uygunluk Ayarları</h1>
-      <div className="mentor-availability-settings-calendar-div">
-        <CalendarComponent onSlotsChange={handleSlotsChange} />
-      </div>
-
-      <div className="mentor-availability-settings-button-div">
-        <button className="mentor-availability-settings-button">
-          Değişiklikleri Kaydet
-        </button>
-      </div>
+      <Calendar onSlotsChange={handleSlotsChange} />
     </div>
   );
 };

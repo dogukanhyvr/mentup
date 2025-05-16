@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { saveAvailability } = require('../controllers/availabilityController');
-const auth = require('../middleware/auth'); // JWT veya session auth
+const { saveAvailability } = require('../controllers/availabilitySlotController');
+const { verifyToken } = require('../middlewares/authMiddleware');
 
-router.post('/save', auth, saveAvailability);
+router.post('/save', verifyToken, saveAvailability);
 
 module.exports = router;
