@@ -139,8 +139,8 @@ const AdminPanel = () => {
                   <p>
                     {(() => {
                       try {
-                        const skills = JSON.parse(applicant.skills || "[]");
-                        return skills.length > 0 ? skills.join(", ") : "Belirtilmemiş";
+                        const industries = JSON.parse(applicant.industries || "[]");
+                        return industries.length > 0 ? industries.join(", ") : "Belirtilmemiş";
                       } catch (error) {
                         console.error("Skills parse error:", error);
                         return "Belirtilmemiş";
@@ -150,10 +150,10 @@ const AdminPanel = () => {
                   <p>
                     {(() => {
                       try {
-                        const languages = JSON.parse(applicant.languages || "[]");
-                        return languages.length > 0 ? languages.join(", ") : "Belirtilmemiş";
+                        const skills = JSON.parse(applicant.skills || "[]");
+                        return skills.length > 0 ? skills.join(", ") : "Belirtilmemiş";
                       } catch (error) {
-                        console.error("Languages parse error:", error);
+                        console.error("Skills parse error:", error);
                         return "Belirtilmemiş";
                       }
                     })()}
@@ -209,10 +209,10 @@ const AdminPanel = () => {
               <p className="admin-panel-skills-text">
                 {(() => {
                   try {
-                    const skills = JSON.parse(selectedApplicant.skills || "[]");
-                    return skills.length > 0 ? skills.join(", ") : "Belirtilmemiş";
+                    const industries = JSON.parse(selectedApplicant.industries || "[]");
+                    return industries.length > 0 ? industries.join(", ") : "Belirtilmemiş";
                   } catch (error) {
-                    console.error("Skills parse error:", error);
+                    console.error("Industries parse error:", error);
                     return "Belirtilmemiş";
                   }
                 })()}
@@ -223,10 +223,10 @@ const AdminPanel = () => {
               <p className="admin-panel-languages-text">
                 {(() => {
                   try {
-                    const languages = JSON.parse(selectedApplicant.languages || "[]");
-                    return languages.length > 0 ? languages.join(", ") : "Belirtilmemiş";
+                    const skills = JSON.parse(selectedApplicant.skills || "[]");
+                    return skills.length > 0 ? skills.join(", ") : "Belirtilmemiş";
                   } catch (error) {
-                    console.error("Languages parse error:", error);
+                    console.error("Skills parse error:", error);
                     return "Belirtilmemiş";
                   }
                 })()}

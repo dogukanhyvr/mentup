@@ -15,8 +15,8 @@ exports.getApplications = async (req, res) => {
         'degree_number',
         'experience_years',
         'why_mentor',
+        'industries',
         'skills',
-        'languages',
       ],
       include: [
         {
@@ -49,8 +49,8 @@ exports.deleteApplication = async (req, res) => {
         name: application.name,
         surname: application.surname,
         email: application.email,
+        industries: application.industries,
         skills: application.skills,
-        languages: application.languages,
       });
     } catch (err) {
       console.error('Reddedilen başvuru kaydedilemedi:', err);

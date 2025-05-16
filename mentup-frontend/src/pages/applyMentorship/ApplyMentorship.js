@@ -56,8 +56,8 @@ const CustomDropdown = ({ options, selectedOptions, setSelectedOptions, label })
 const ApplyMentorship = () => {
   const fileInputRef = useRef(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedIndustries, setSelectedIndustries] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
-  const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -67,7 +67,7 @@ const ApplyMentorship = () => {
   const [whyMentor, setWhyMentor] = useState("");
   const [hasApplied, setHasApplied] = useState(false);
 
-  const skillOptions = [
+  const IndustryOptions = [
     "Yazılım Geliştirme",
     "Web Teknolojileri",
     "Mobil Teknolojiler",
@@ -79,7 +79,7 @@ const ApplyMentorship = () => {
     "Pazarlama & İş Geliştirme",
   ];
 
-  const languageOptions = [
+  const SkillOptions = [
     "C",
     "C++",
     "C#",
@@ -168,8 +168,8 @@ const ApplyMentorship = () => {
     formData.append("degree_number", degreeNumber);
     formData.append("experience_years", experienceYears);
     formData.append("why_mentor", whyMentor);
-    formData.append("skills", JSON.stringify(selectedSkills)); // Array'i JSON string'e dönüştür
-    formData.append("languages", JSON.stringify(selectedLanguages)); // Array'i JSON string'e dönüştür
+    formData.append("industries", JSON.stringify(selectedIndustries));
+    formData.append("skills", JSON.stringify(selectedSkills));
     formData.append("cv", selectedFiles[0]); // İlk dosyayı ekle
 
     try {
@@ -292,17 +292,17 @@ const ApplyMentorship = () => {
 
                 {/* Beceri Alanları */}
                 <CustomDropdown
-                  options={skillOptions}
-                  selectedOptions={selectedSkills}
-                  setSelectedOptions={setSelectedSkills}
+                  options={IndustryOptions}
+                  selectedOptions={selectedIndustries}
+                  setSelectedOptions={setSelectedIndustries}
                   label="Beceri Alanları"
                 />
 
                 {/* Yazılım Dilleri */}
                 <CustomDropdown
-                  options={languageOptions}
-                  selectedOptions={selectedLanguages}
-                  setSelectedOptions={setSelectedLanguages}
+                  options={SkillOptions}
+                  selectedOptions={selectedSkills}
+                  setSelectedOptions={setSelectedSkills}
                   label="Yazılım Dilleri"
                 />
 

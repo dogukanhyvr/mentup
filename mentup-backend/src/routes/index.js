@@ -6,6 +6,7 @@ const applyMentorshipRoutes = require('./applyMentorshipRoutes');
 const adminPanelRoutes = require('./adminPanelRoutes');
 const userRoleRoutes = require('./userRoleRoutes');
 const mentorRoutes = require('./mentorRoutes');
+const availabilitySlotRoutes = require('./availabilitySlotRoutes');
 
 // Health-check
 router.get('/', (req, res) => {
@@ -17,7 +18,7 @@ router.use('/auth', authRoutes);
 
 router.use('/profile', profileRoutes);
 
-router.use('/mentor', applyMentorshipRoutes, mentorRoutes);
+router.use('/mentor', applyMentorshipRoutes, mentorRoutes, availabilitySlotRoutes);
 
 router.use('/admin', adminPanelRoutes);
 

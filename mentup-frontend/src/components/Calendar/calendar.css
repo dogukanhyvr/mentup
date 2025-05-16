@@ -1,0 +1,157 @@
+/* Takvimin genel görünümünü küçült */
+.rbc-calendar {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  background-color: #171717;
+  border-radius: 10px;
+}
+
+.rbc-toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.rbc-btn-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.rbc-btn-group button {
+  color: #fff;
+  transition: background-color 0.3s ease,
+}
+
+.rbc-btn-group button:hover {
+  background-color: #232323;
+  color: #fff;
+}
+
+.rbc-toolbar-label {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.rbc-time-header-content {
+  display: block;
+}
+
+.rbc-row .rbc-time-header-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.rbc-time-view .rbc-row {
+  box-sizing: border-box;
+  min-height: 30px;
+}
+
+
+
+/* Header gün isimleri */
+.rbc-header {
+  background-color: #1e1e2f;
+  color: #fff;
+  padding: 20px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.rbc-row-bg {
+  display: flex;
+  flex-direction: row;
+  padding: 0px;
+}
+
+.rbc-day-bg {
+}
+
+.rbc-time-gutter .rbc-time-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rbc-time-slot {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.rbc-label {
+  color: #9f9291;
+}
+
+/* Event (seçilen slot) görünümü */
+.rbc-event {
+  background-color: #006239 !important; /* yeşil */
+  border: none;
+  border-radius: 6px;
+  padding: 4px;
+  font-size: 13px;
+  color: white;
+}
+
+/* Seçim yapılırken çıkan kutu */
+.rbc-slot-selection {
+  background-color: #006239; /* yeşil arka plan */
+}
+
+/* Zaman dilimi kolon stili */
+.rbc-timeslot-group {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ddd;
+}
+
+.rbc-time-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rbc-event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.rbc-event-label {
+  font-size: 10px;
+  color: #fff;
+  text-align: center;
+}
+
+.rbc-event-content {
+  font-size: 12px;
+  text-align: center;
+}
+
+.rbc-current-time-indicator {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #006239;
+}
+
+.rbc-row-segment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

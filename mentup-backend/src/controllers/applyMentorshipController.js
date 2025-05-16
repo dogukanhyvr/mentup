@@ -9,8 +9,8 @@ exports.createMentorApplication = async (req, res) => {
     degree_number, 
     experience_years, 
     why_mentor, 
-    skills, 
-    languages 
+    industries, 
+    skills,
   } = req.body;
   const cvFile = req.file;
 
@@ -63,8 +63,8 @@ exports.createMentorApplication = async (req, res) => {
       degree_number,
       experience_years,
       why_mentor,
+      industries,
       skills,
-      languages,
       type: 'mentor_application',
       status: 'pending',
     });
