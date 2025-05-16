@@ -18,7 +18,9 @@ router.use('/auth', authRoutes);
 
 router.use('/profile', profileRoutes);
 
-router.use('/mentor', applyMentorshipRoutes, mentorRoutes, availabilitySlotRoutes);
+router.use('/mentor', applyMentorshipRoutes, mentorRoutes);
+
+router.use('/mentor/availability', availabilitySlotRoutes);
 
 router.use('/admin', adminPanelRoutes);
 

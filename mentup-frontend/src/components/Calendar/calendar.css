@@ -1,17 +1,122 @@
-.simple-calendar table {
-  border-collapse: collapse;
-  width: 100%;
+.simple-calendar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
-.simple-calendar th, .simple-calendar td {
-  border: 1px solid #ddd;
-  width: 12%;
+
+/* Tabloda hücreler arasına boşluk için: */
+.simple-calendar table {
+  border-collapse: separate;  /* collapsed yerine separate */
+  border-spacing: 6px 6px;    /* yatay ve dikey boşluk */
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgb(59, 59, 59);
+}
+
+.simple-calendar th {
+  border: 1px solid rgb(59, 59, 59);
+  width: 25%;
   height: 32px;
   text-align: center;
+  padding: 4px 10px;
+  background: #171717;
+  color: #fff;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
 }
+
+.simple-calendar td {
+  border: 1px solid rgb(59, 59, 59);
+  width: 20%;
+  height: 32px;
+  text-align: center;
+  padding: 4px 30px;
+  font-size: 14px;
+  background-color: transparent; /* hücre arkaplanını kaldırdık */
+}
+
+/* Seçili hücrede sadece iç div'e arka plan veriyoruz */
 .simple-calendar td.selected {
-  background: #4caf50;
-  color: white;
+  background-color: transparent;
+  padding: 2px; /* hücre iç boşluk */
 }
-.simple-calendar th {
-  background: #f5f5f5;
+
+.simple-calendar td.selected .cell-content {
+  background-color: #006239;
+  padding: 4px;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+.cell-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.simple-calendar-hours {
+  background-color: #171717;
+  color: #fff;
+}
+
+.simple-calendar-selected-slots {
+  display: flex;
+  flex-direction: column;
+  color: #8e9291;
+}
+
+.simple-calendar-selected-slots b {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.simple-calendar-selected-slots ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calendar-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  margin-left: 0;
+}
+
+.calendar-controls button {
+  background: #1d1d1d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  border: 1px solid rgb(59, 59, 59);
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-controls button:hover {
+  background-color: #2c2c2c;
+}
+
+.calendar-info {
+  color: #8e9291;
+  font-size: 13px;
+}
+
+.today-column {
+  background-color: #1d1d1d !important;
+}
+
+/* calendar.css */
+.now-cell {
+  background-color: #3c3c3c !important; /* Sarımsı veya istediğin bir renk */
 }

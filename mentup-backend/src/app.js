@@ -30,7 +30,7 @@ app.use('/profile', profileRoutes);
 app.use('/accountSettings', accountSettingsRouter);
 app.use('/mentor', applyMentorshipRoutes);
 app.use('/mentor', mentorRoutes);
-app.use('/mentor', availabilitySlotRoutes);
+app.use('/mentor/availability', availabilitySlotRoutes);
 app.use('/admin', adminPanelRoutes);
 app.use('/user-role', userRoleRoutes);
 
