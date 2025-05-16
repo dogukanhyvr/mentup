@@ -1,10 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./mentorAvailabilitySettings.css";
 import Calendar from "../../components/Calendar/calendar";
 
 const MentorAvailabilitySettings = () => {
   const [slots, setSlots] = useState([]);
+
+  // Sayfa açılırken mevcut slotları çek
+  useEffect(() => {
+    const fetchSlots = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get(
+          "http://localhost:5001/mentor/availability/getAvailability",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        // DB'den gelen slotları Calendar'ın beklediği formata çevir
+        setSlots(
+          res.data.slots.map((slot) => ({
+            start: new Date(`${slot.date}T${slot.start_time}`),
+            end: new Date(`${slot.date}T${slot.end_time}`),
+          }))
+        );
+      } catch (err) {
+        console.error("Slotlar alınamadı:", err);
+      }
+    };
+    fetchSlots();
+  }, []);
 
   // Takvimden slotlar değiştikçe güncelle
   const handleSlotsChange = (updatedSlots) => {
@@ -23,7 +46,7 @@ const MentorAvailabilitySettings = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5001/mentor/save",
+        "http://localhost:5001/mentor/availability/save",
         { slots: formattedSlots },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -36,7 +59,20 @@ const MentorAvailabilitySettings = () => {
 
   return (
     <div className="mentor-availability-settings-container">
-      <Calendar onSlotsChange={handleSlotsChange} />
+      <div className="mentor-availability-settings-title-div">
+        <h1 className="mentor-availability-settings-title">
+          Uygunluk Ayarları
+        </h1>
+      </div>
+      <Calendar slots={slots} onSlotsChange={handleSlotsChange} />
+      <div className="mentor-availability-settings-button-div">
+        <button
+          className="mentor-availability-settings-button"
+          onClick={handleSave}
+        >
+          Kaydet
+        </button>
+      </div>
     </div>
   );
 };

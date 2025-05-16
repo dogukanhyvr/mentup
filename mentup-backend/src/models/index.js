@@ -28,6 +28,8 @@ db.Document = require('./document')(sequelize, DataTypes);
 db.Profile = require('./profile')(sequelize, DataTypes);
 db.User = require('./User')(sequelize, DataTypes); // EN SON
 db.Mentor = require('./mentors')(sequelize, DataTypes); // 🟢 Bunu EKLE
+const AvailabilitySlot = require('./availabilitySlot')(sequelize, DataTypes);
+db.AvailabilitySlot = AvailabilitySlot;
 
 // 🔴 EN SON User gelsin çünkü diğerlerine bağlı
 db.User = require('./User')(sequelize, DataTypes);
