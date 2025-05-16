@@ -14,4 +14,8 @@ router.post('/login', validate(loginValidation), authController.login);
 // Çıkış yapma
 router.post('/logout', logout);
 
+router.post('/request-reset', authController.requestPasswordReset);
+router.post('/reset-password', authController.resetPassword);
+
+
 module.exports = router;

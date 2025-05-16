@@ -1,5 +1,6 @@
 const { User, userProfile } = require('../models');
 const bcrypt = require('bcrypt'); // bcrypt kütüphanesini ekle
+const EmailService = require('../services/EmailService');
 
 // Login işlemi
 const jwt = require('jsonwebtoken');
@@ -111,6 +112,70 @@ exports.logout = async (req, res) => {
   } catch (err) {
     console.error('Çıkış işlemi sırasında hata:', err);
     res.status(500).json({ message: 'Çıkış işlemi sırasında bir hata oluştu.' });
+  }
+};
+
+exports.requestPasswordReset = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ where: { email } });
+  if (!user) return res.status(404).json({ message: 'Böyle bir e-posta kayıtlı değil.' });
+
+  // 1️⃣ Token üret (payload: userId)
+  const token = jwt.sign(
+    { userId: user.id },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN }
+  );
+
+  // 2️⃣ Frontend’deki reset-password sayfanıza yönlendiren link
+  const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
+  // 3️⃣ Maili yolla
+  await EmailService.send(
+    email,
+    'MentUp: Şifre Sıfırlama',
+    `<p>Şifreni sıfırlamak için <a href="${resetLink}">buraya tıklayın</a>.`
+    + ` Bu link <strong>${process.env.JWT_EXPIRES_IN}</strong> içinde geçerlidir.</p>`
+  );
+
+  return res.json({ message: 'Şifre sıfırlama linki e-postanıza gönderildi.' });
+};
+
+// 2) Yeni şifreyi kaydetme (token’lı endpoint)
+exports.resetPassword = async (req, res) => {
+  // 1) Token’ı al: hem body’den, hem query’den deneyin
+  const token = req.body.token || req.query.token;
+  if (!token) {
+    return res.status(400).json({ message: 'Token gönderilmedi.' });
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ message: 'Geçerli veya süresi dolmuş token.' });
+  }
+
+  // 2) Yeni şifreleri al ve kontrol et
+  const { password, passwordAgain } = req.body;
+  if (!password || password !== passwordAgain) {
+    return res.status(400).json({ message: 'Şifreler eşleşmiyor.' });
+  }
+
+  // 3) Kullanıcıyı bul ve şifreyi güncelle
+  try {
+    const user = await User.findByPk(payload.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+    }
+    const hashed = await bcrypt.hash(password, 10);
+    await user.update({ password: hashed });
+    return res.status(200).json({ message: 'Şifre değiştirildi.' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Sunucu hatası.' });
   }
 };
 

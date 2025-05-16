@@ -20,6 +20,7 @@ import Mentors from './pages/mentors/Mentors';
 import VideoChat from './pages/videochat/VideoChat';
 import AdminPanel from './admin/pages/adminPanel/adminPanel';
 import ForgotPassword from './pages/forgotPassword/ForgotPassword';
+import ResetPassword  from './pages/resetPassword/resetPassword';
 import ProtectedRoute from './components/ProtectedRoute'; // ProtectedRoute bileşenini ekleyin
 import NotFound from './pages/NotFound/NotFound';
 import MentorProfile from './mentorPages/mentorProfile/mentorProfile';
@@ -90,6 +91,7 @@ function App() {
           }
         />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/reset-password"   element={<ResetPassword />} />
         <Route path="/notfound" element={<NotFound />} />
         <Route path="/mentorprofile" element={<MentorProfile />} />
         <Route
