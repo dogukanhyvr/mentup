@@ -83,7 +83,7 @@ const Login = () => {
   return (
     <div>
       <div className="login-container">
-      <div className='login-logo-name'>
+        <div className='login-logo-name'>
           <a href='/home'>MentUp</a>
         </div>
         <div className="login-box">
