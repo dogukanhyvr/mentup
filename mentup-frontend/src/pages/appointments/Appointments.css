@@ -247,3 +247,48 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(26px);
 }
+
+.appointments-toggle-tabs {
+  position: relative;
+  display: flex;
+  width: 480px;              /* Daha geniş */
+  height: 40px;              /* Biraz daha yüksek */
+  background: #e0e0e0;
+  border-radius: 28px;       /* Daha fazla border-radius */
+  margin: 40px 40px 32px 40px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.appointments-toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: #006239;       /* Seçili kısım yeşil */
+  border-radius: 28px;       /* Aynı radius */
+  z-index: 0;
+  transition: left 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+.appointments-toggle-tab {
+  flex: 1 1 0;
+  border: none;
+  background: transparent;
+  color: #444444;
+  font-weight: bold;
+  font-size: 18px;           /* Biraz daha büyük yazı */
+  padding: 0;
+  border-radius: 28px;
+  cursor: pointer;
+  z-index: 1;
+  position: relative;
+  transition: color 0.2s;
+  height: 100%;
+  outline: none;
+}
+
+.appointments-toggle-tab.active {
+  color: #fff;
+}

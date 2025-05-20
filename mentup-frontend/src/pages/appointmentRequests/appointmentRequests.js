@@ -1,49 +1,33 @@
-import React, { useEffect, useState } from "react";
-import "./mentorAppointmentRequests.css";
+import React, { useState } from "react";
+import "./appointmentRequests.css";
 
-const MentorAppointmentRequests = () => {
-  const [requests, setRequests] = useState([]);
-  const [modalReq, setModalReq] = useState(null);
-
-  useEffect(() => {
-    // Örnek veri
-    setRequests([
-      {
-        request_id: 1,
-        mentee: {
-          name: "Ayşe",
-          surname: "Yılmaz",
-          skills: ["Python", "JavaScript"],
-          photo_url: "/images/mentee.png"
-        },
-        slot: {
-          date: "2025-05-25",
-          start_time: "19:00",
-          end_time: "19:30"
-        },
-        meeting_reason: "Yeni web sitemin tasarımını geliştirme"
+const AppointmentRequests = () => {
+  const [requests] = useState([
+    {
+      request_id: 1,
+      mentor: {
+        name: "Mehmet",
+        surname: "Demir",
+        skills: ["Java", "React"],
+        photo_url: "/images/mentor.png"
       },
-      // ... diğer talepler
-    ]);
-  }, []);
+      slot: {
+        date: "2025-05-28",
+        start_time: "20:00",
+        end_time: "20:30"
+      },
+      meeting_reason: "Frontend geliştirme üzerine konuşmak istiyorum."
+    }
+  ]);
+  const [modalReq, setModalReq] = useState(null);
 
   const openModal = (req) => setModalReq(req);
   const closeModal = () => setModalReq(null);
 
-  const handleApprove = (requestId) => {
-    // Onayla işlemi (şimdilik sadece kapat)
-    closeModal();
-  };
-
-  const handleReject = (requestId) => {
-    // Reddet işlemi (şimdilik sadece kapat)
-    closeModal();
-  };
-
   return (
     <div className="appointment-requests-container">
       <div className="appointment-requests-content-div">
-        <h1 className="appointment-requests-title">Gelen Görüşme Talepleri</h1>
+        <h1 className="appointment-requests-title">Yaptığım Görüşme Talepleri</h1>
         <div className="appointment-requests-cards">
           {requests.map((req) => (
             <div
@@ -55,9 +39,7 @@ const MentorAppointmentRequests = () => {
               <div
                 className="appointment-requests-image"
                 style={{
-                  backgroundImage: `url(${
-                    req.mentee.photo_url || "/images/mentee.png"
-                  })`,
+                  backgroundImage: `url(${req.mentor.photo_url || "/images/mentor.png"})`,
                 }}
               ></div>
               <div className="appointment-requests-info-content">
@@ -65,7 +47,7 @@ const MentorAppointmentRequests = () => {
                   {req.meeting_reason || "Görüşme Sebebi Yok"}
                 </h2>
                 <h3 className="appointment-requests-name">
-                  {req.mentee.name} {req.mentee.surname}
+                  {req.mentor.name} {req.mentor.surname}
                 </h3>
                 <div className="appointment-requests-description">
                   <p>
@@ -83,11 +65,6 @@ const MentorAppointmentRequests = () => {
               </div>
             </div>
           ))}
-          {requests.length === 0 && (
-            <div style={{ color: "#fff", marginTop: "32px" }}>
-              Henüz görüşme talebi yok.
-            </div>
-          )}
         </div>
       </div>
 
@@ -109,14 +86,14 @@ const MentorAppointmentRequests = () => {
             <div className="mar-modal-form-item">
               <label>İsim Soyisim</label>
               <p className="mar-modal-text">
-                {modalReq.mentee.name} {modalReq.mentee.surname}
+                {modalReq.mentor.name} {modalReq.mentor.surname}
               </p>
             </div>
             <div className="mar-modal-form-item">
               <label>Biyografi</label>
               <input
                 className="mar-modal-text"
-                value={"Kariyerine yeni başlayan bir yazılımcı."}
+                value={"10 yıllık tecrübeli bir frontend geliştirici."}
                 readOnly
                 style={{ background: "#232323", color: "#fff", border: "1px solid #444" }}
               />
@@ -124,7 +101,7 @@ const MentorAppointmentRequests = () => {
             <div className="mar-modal-form-item">
               <label>Yazılım Dilleri</label>
               <p className="mar-modal-text">
-                {modalReq.mentee.skills?.join(", ")}
+                {modalReq.mentor.skills?.join(", ")}
               </p>
             </div>
             <div className="mar-modal-form-item">
@@ -146,20 +123,16 @@ const MentorAppointmentRequests = () => {
                 {modalReq.slot.start_time} - {modalReq.slot.end_time}
               </p>
             </div>
-            <div className="mar-modal-action-buttons">
+            <div className="mentee-appointment-requests-modal-cancel-row">
               <button
-                className="mar-modal-button reject"
-                onClick={() => handleReject(modalReq.request_id)}
+                className="mentee-appointment-requests-modal-cancel-button"
+                onClick={() => {
+                  // Buraya iptal işlemini ekleyebilirsin
+                  closeModal();
+                }}
               >
-                Talebi Reddet
+                Talebimi İptal Et
               </button>
-              <button
-                className="mar-modal-button approve"
-                onClick={() => handleApprove(modalReq.request_id)}
-              >
-                Talebi Onayla
-              </button>
-
             </div>
           </div>
         </div>
@@ -168,4 +141,4 @@ const MentorAppointmentRequests = () => {
   );
 };
 
-export default MentorAppointmentRequests;
+export default AppointmentRequests;

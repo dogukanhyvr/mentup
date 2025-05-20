@@ -84,11 +84,13 @@ const BrowseMentors = () => {
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [allMentors, setAllMentors] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [modalMentor, setModalMentor] = useState(null);
   const [mentorSlots, setMentorSlots] = useState([]);
-  const [selectedMentor, setSelectedMentor] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState("");
-  const [showScheduler, setShowScheduler] = useState(false);
+  const [meetingReason, setMeetingReason] = useState("");
+  const [loadingSlots, setLoadingSlots] = useState(false);
 
   const menuRef = useRef(null);
 
@@ -128,67 +130,86 @@ const BrowseMentors = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Filtreli mentorları çek
+  // Mentorları ilk yüklemede çek
   useEffect(() => {
-    if (selectedSkills.length === 0 && selectedLanguages.length === 0 && !searchTerm) {
-      setMentors([]);
-      setLoading(false);
-      return;
-    }
     setLoading(true);
     axios
-      .get("http://localhost:5001/mentor/filterMentors", {
-        params: {
-          skills: [...selectedSkills, ...selectedLanguages].join(","),
-          search: searchTerm
-        }
-      })
+      .get("http://localhost:5001/mentor/filterMentors")
       .then((res) => {
+        setAllMentors(res.data);
         setMentors(res.data);
         setLoading(false);
-        console.log("Gelen mentorlar:", res.data);
       })
-      .catch((err) => {
+      .catch(() => {
+        setAllMentors([]);
         setMentors([]);
         setLoading(false);
-        console.error("Mentorlar alınamadı:", err);
       });
-  }, [selectedSkills, selectedLanguages, searchTerm]);
+  }, []);
 
+  // Arama kutusuna yazıldıkça filtrele
   const handleSearchInput = (e) => {
-    setSearchTerm(e.target.value);
+    const value = e.target.value;
+    setSearchTerm(value);
+    const filtered = allMentors.filter(
+      (mentor) =>
+        mentor.name.toLowerCase().includes(value.toLowerCase()) ||
+        mentor.surname.toLowerCase().includes(value.toLowerCase())
+    );
+    setMentors(filtered);
   };
 
   const handleSearch = () => {};
 
-  const handleScheduleClick = async (mentor) => {
-    setSelectedMentor(mentor);
-    setShowScheduler(true);
-    setMentorSlots([]);
+  // Modal açma
+  const openMentorModal = async (mentor) => {
+    setModalMentor(mentor);
     setSelectedSlot("");
+    setMeetingReason("");
+    setLoadingSlots(true);
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
         `http://localhost:5001/mentor/availability/getMentorAvailability/${mentor.user_id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setMentorSlots(res.data.slots);
     } catch (err) {
       setMentorSlots([]);
-      alert("Mentorun müsaitlikleri alınamadı.");
     }
+    setLoadingSlots(false);
   };
 
-  const handleConfirm = () => {
+  const closeMentorModal = () => {
+    setModalMentor(null);
+    setMentorSlots([]);
+    setSelectedSlot("");
+    setMeetingReason("");
+  };
+
+  const handleModalConfirm = () => {
     if (!selectedSlot) {
       alert("Lütfen bir müsaitlik seçin.");
       return;
     }
-    alert("Seçilen Slot ID: " + selectedSlot);
-    setShowScheduler(false);
+    if (!meetingReason.trim()) {
+      alert("Lütfen görüşme sebebinizi yazın.");
+      return;
+    }
+    // Burada backend'e görüşme talebi gönderilebilir
+    alert(
+      `Görüşme talebi gönderildi!\nSlot: ${selectedSlot}\nSebep: ${meetingReason}`
+    );
+    closeMentorModal();
   };
+
+  useEffect(() => {
+    if (modalMentor) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [modalMentor]);
 
   return (
     <div className="browse-mentors-container">
@@ -247,7 +268,6 @@ const BrowseMentors = () => {
               </div>
             </div>
 
-            {/* Mentor kartları */}
             <div className="mentor-list-container">
               {loading ? (
                 <div style={{ color: "#fff", marginTop: "32px" }}>Yükleniyor...</div>
@@ -255,7 +275,12 @@ const BrowseMentors = () => {
                 <div style={{ color: "#fff", marginTop: "32px" }}>Mentor bulunamadı.</div>
               ) : (
                 mentors.map((mentor, index) => (
-                  <div key={index} className="mentor-card">
+                  <div
+                    key={index}
+                    className="mentor-card"
+                    onClick={() => openMentorModal(mentor)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <div
                       className="mentor-image"
                       style={{
@@ -284,57 +309,23 @@ const BrowseMentors = () => {
                           ? JSON.parse(mentor.skills).join(", ")
                           : ""}
                       </p>
-                      <p className="mentor-description">{mentor.bio}</p>
+                      <p className="mentor-description">{mentor.bio || "Kısa biyografi: 5 yıldır yazılım geliştiren, mentorluk yapmayı seven biriyim."}</p>
                     </div>
                     <div className="mentor-actions">
                       <div className="browse-mentors-mentor-buttons">
                         <button
-                          onClick={() => handleScheduleClick(mentor)}
+                          onClick={e => { e.stopPropagation(); openMentorModal(mentor); }}
                           className="schedule-button"
                         >
                           Görüşme Planla
                         </button>
-                        <button 
+                        <button
                           className="browse-mentors-message-button"
-                          >
+                          onClick={e => e.stopPropagation()}
+                        >
                           Mesaj At
-                          </button>
+                        </button>
                       </div>
-                      {showScheduler && selectedMentor && selectedMentor.user_id === mentor.user_id && (
-                        <div className="scheduler-panel">
-                          <BmSingleSelectDropdown
-                            label="Müsaitlik Seç"
-                            options={mentorSlots.map((slot) => {
-                              const date = new Date(`${slot.date}T${slot.start_time}`);
-                              const dayName = date.toLocaleDateString("tr-TR", { weekday: "long" });
-                              const dateStr = date.toLocaleDateString("tr-TR");
-                              const startTime = slot.start_time.slice(0, 5);
-                              const endTime = slot.end_time.slice(0, 5);
-                              return {
-                                value: slot.slot_id,
-                                label: `${dateStr} ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${startTime}-${endTime}`,
-                              };
-                            })}
-                            selectedOption={
-                              mentorSlots
-                                .map((slot) => {
-                                  const date = new Date(`${slot.date}T${slot.start_time}`);
-                                  const dayName = date.toLocaleDateString("tr-TR", { weekday: "long" });
-                                  const dateStr = date.toLocaleDateString("tr-TR");
-                                  const startTime = slot.start_time.slice(0, 5);
-                                  const endTime = slot.end_time.slice(0, 5);
-                                  return {
-                                    value: slot.slot_id,
-                                    label: `${dateStr} ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${startTime}-${endTime}`,
-                                  };
-                                })
-                                .find((opt) => opt.value === selectedSlot) || null
-                            }
-                            setSelectedOption={(option) => setSelectedSlot(option.value)}
-                          />
-                          <button onClick={handleConfirm}>Görüşme Talebinde Bulun</button>
-                        </div>
-                      )}
                     </div>
                   </div>
                 ))
@@ -343,6 +334,113 @@ const BrowseMentors = () => {
           </div>
         </div>
       </main>
+
+      {/* MODAL */}
+      {modalMentor && (
+        <div className="bm-modal-overlay" onClick={e => e.target.classList.contains('bm-modal-overlay') && closeMentorModal()}>
+          <div className="bm-modal-card">
+            <button className="bm-modal-close-button" onClick={closeMentorModal}>
+              &times;
+            </button>
+            <div className="bm-modal-name-surname-div">
+              <div className="bm-modal-name">
+                <label className="bm-modal-name-label">İsim</label>
+                <p className="bm-modal-name-text">{modalMentor.name}</p>
+              </div>
+              <div className="bm-modal-surname">
+                <label className="bm-modal-surname-label">Soyisim</label>
+                <p className="bm-modal-surname-text">{modalMentor.surname}</p>
+              </div>
+            </div>
+            <div className="bm-modal-form-item">
+              <label>Biyografi</label>
+              <p className="bm-modal-bio-text">
+                {(modalMentor.profile && modalMentor.profile.bio) 
+                  ? modalMentor.profile.bio 
+                  : (modalMentor.bio || "Biyografi bulunamadı.")}
+              </p>
+            </div>
+            <div className="bm-modal-form-item">
+              <label>Beceri Alanları</label>
+              <p className="bm-modal-skills-text">
+                {modalMentor.industries
+                  ? JSON.parse(modalMentor.industries).join(", ")
+                  : "Belirtilmemiş"}
+              </p>
+            </div>
+            <div className="bm-modal-form-item">
+              <label>Yazılım Dilleri</label>
+              <p className="bm-modal-languages-text">
+                {modalMentor.skills
+                  ? JSON.parse(modalMentor.skills).join(", ")
+                  : "Belirtilmemiş"}
+              </p>
+            </div>
+            <div className="bm-modal-form-item">
+              <label>Müsaitlik Seç</label>
+              {loadingSlots ? (
+                <p style={{ color: "#fff" }}>Yükleniyor...</p>
+              ) : (
+                <BmSingleSelectDropdown
+                  label=""
+                  options={mentorSlots.map((slot) => {
+                    const date = new Date(`${slot.date}T${slot.start_time}`);
+                    const dayName = date.toLocaleDateString("tr-TR", { weekday: "long" });
+                    const dateStr = date.toLocaleDateString("tr-TR");
+                    const startTime = slot.start_time.slice(0, 5);
+                    const endTime = slot.end_time.slice(0, 5);
+                    return {
+                      value: slot.slot_id,
+                      label: `${dateStr} ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${startTime}-${endTime}`,
+                    };
+                  })}
+                  selectedOption={
+                    mentorSlots
+                      .map((slot) => {
+                        const date = new Date(`${slot.date}T${slot.start_time}`);
+                        const dayName = date.toLocaleDateString("tr-TR", { weekday: "long" });
+                        const dateStr = date.toLocaleDateString("tr-TR");
+                        const startTime = slot.start_time.slice(0, 5);
+                        const endTime = slot.end_time.slice(0, 5);
+                        return {
+                          value: slot.slot_id,
+                          label: `${dateStr} ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${startTime}-${endTime}`,
+                        };
+                      })
+                      .find((opt) => opt.value === selectedSlot) || null
+                  }
+                  setSelectedOption={(option) => setSelectedSlot(option.value)}
+                />
+              )}
+            </div>
+            <div className="bm-modal-form-item">
+              <label>Görüşme Sebebi</label>
+              <textarea
+                className="bm-modal-meeting-reason-textarea"
+                placeholder="Görüşmek istediğiniz konuyu yazınız..."
+                value={meetingReason}
+                onChange={e => setMeetingReason(e.target.value)}
+                style={{ background: "#232323", color: "#fff", border: "1px solid #444" }}
+                rows={3}
+              />
+            </div>
+            <div className="bm-modal-action-buttons">
+              <button
+                className="bm-modal-button reject"
+                onClick={closeMentorModal}
+              >
+                Vazgeç
+              </button>
+              <button
+                className="bm-modal-button approve"
+                onClick={handleModalConfirm}
+              >
+                Görüşme Talebinde Bulun
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

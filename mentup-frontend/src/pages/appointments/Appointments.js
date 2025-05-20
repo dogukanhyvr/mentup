@@ -21,12 +21,29 @@ const Appointments = () => {
   return (
     <div className="appointments-container">
       <div className="toggle-container">
-        <span className={`tab-span ${isUpcoming ? "active" : ""}`}>Planlanan Görüşmelerim</span>
-        <label className="switch">
-          <input type="checkbox" checked={!isUpcoming} onChange={toggleView} />
-          <span className="slider"></span>
-        </label>
-        <span className={!isUpcoming ? "active" : ""}>Geçmiş Görüşmelerim</span>
+        <div className="appointments-toggle-tabs">
+          <div
+            className="appointments-toggle-slider"
+            style={{
+              left: isUpcoming ? 0 : "50%",
+              transition: "left 0.25s cubic-bezier(.4,0,.2,1)"
+            }}
+          />
+          <button
+            className={`appointments-toggle-tab${isUpcoming ? " active" : ""}`}
+            onClick={() => setIsUpcoming(true)}
+            type="button"
+          >
+            Planlanan Görüşmelerim
+          </button>
+          <button
+            className={`appointments-toggle-tab${!isUpcoming ? " active" : ""}`}
+            onClick={() => setIsUpcoming(false)}
+            type="button"
+          >
+            Geçmiş Görüşmelerim
+          </button>
+        </div>
       </div>
 
       <div className="appointment-content">
