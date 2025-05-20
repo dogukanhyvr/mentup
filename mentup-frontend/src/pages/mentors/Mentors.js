@@ -29,9 +29,20 @@ const Mentors = () => {
                   }}
                 />
                 <h2 className='mentor-name'>{mentor.name} {mentor.surname}</h2>
-                {/* Meslek bilgisi yoksa bu satırı kaldırabilirsin */}
                 {/* <h3 className='mentor-job'>Web Tasarımcı</h3> */}
                 <p className='mentor-info'>{mentor.profile?.bio}</p>
+                <p className='mentor-skills'>
+                  <strong>Beceri Alanları:</strong>{" "}
+                  {mentor.profile?.skills
+                    ? JSON.parse(mentor.profile.skills).join(", ")
+                    : "Belirtilmemiş"}
+                </p>
+                <p className='mentor-languages'>
+                  <strong>Yazılım Dilleri:</strong>{" "}
+                  {mentor.profile?.languages
+                    ? JSON.parse(mentor.profile.languages).join(", ")
+                    : "Belirtilmemiş"}
+                </p>
               </div>
             ))}
           </div>

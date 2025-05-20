@@ -1,5 +1,4 @@
-.appointment-requests-container {
-  /* background: linear-gradient(168.18deg, #101828 22.59%, #6938ef 85.64%), linear-gradient(137.87deg, #101828 37.36%, #8619f5 80.62%); */
+.mentee-appointment-requests-container {
   background-color: #121212;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
   margin: 0;
@@ -8,34 +7,34 @@
   overflow-y: auto;
 }
 
-.appointment-requests-contanet-div {
+.mentee-appointment-requests-content-div {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.appointment-requests-title {
+.mentee-appointment-requests-title {
   font-size: 28px;
   color: #fff;
   margin-left: 40px;
   margin-top: 40px;
 }
 
-.appointment-requests-cards {
+.mentee-appointment-requests-cards {
   display: flex;
   flex-direction: column;
   margin-left: 40px;
   margin-top: 20px ;
 }
 
-.appointment-requests-card {
+.mentee-appointment-requests-card {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 20px;
-  width: 45%;
+  width: 60%;
   height: 200px;
   background-color: #171717;
   border: 1px solid rgb(59, 59, 59);
@@ -44,7 +43,7 @@
   padding: 2rem;
 }
 
-.appointment-requests-image {
+.mentee-appointment-requests-image {
   width: 160px;
   height: 160px;
   border-radius: 50%;
@@ -57,74 +56,40 @@
   margin-right: 20px;
 }
 
-.appointment-requests-info-content {
+.mentee-appointment-requests-info-content {
   display: flex;
   flex-direction: column;
 }
 
-.appointment-requests-info-title {
+.mentee-appointment-requests-info-title {
   font-size: 20px;
   color: #fff;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.appointment-requests-name {
+.mentee-appointment-requests-name {
   color: #fff;
   font-size: 16px;
   margin-bottom: 10px;
 }
 
-.appointment-requests-description {
+.mentee-appointment-requests-description {
   display: flex;
   flex-direction: column;
   gap: 10px;
   color: #8e9291;
 }
 
-.appointment-requests-button-div {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 30px;
-}
-
-.appointment-requests-button-div button {
-  width: 120px;
-  height: 40px;
-  border-radius: 8px;
-  border: none;
-  color: #ffffff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: 25px;
-}
-
-.appointment-requests-approve-button {
-  background-color: #006239;
-}
-
-.appointment-requests-approve-button:hover {
-  background-color: #217953;
-}
-
-.appointment-requests-reject-button {
-  background-color: #8e2e28;
-}
-
-.appointment-requests-reject-button:hover {
-  background-color: #96433d;
-}
-
-.mar-modal-overlay {
+/* Modal stilleri */
+.mentee-appointment-requests-modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(0,0,0,0.8);
   display: flex; justify-content: center; align-items: center;
   z-index: 1000;
 }
-.mar-modal-card {
+.mentee-appointment-requests-modal-card {
   background: #1d1d1d;
   padding: 24px;
   border-radius: 10px;
@@ -138,7 +103,7 @@
   gap: 18px;
   position: relative;
 }
-.mar-modal-close-button {
+.mentee-appointment-requests-modal-close-button {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -150,35 +115,26 @@
   cursor: pointer;
   transition: color 0.2s;
 }
-
-.mar-modal-close-button:hover {
+.mentee-appointment-requests-modal-close-button:hover {
   color: #ff4d4d;
 }
-
-.mar-modal-form-item {
+.mentee-appointment-requests-modal-form-item {
   display: flex;
   flex-direction: column;
   gap: 5px;
   margin-bottom: 5px;
 }
-
-.mar-modal-form-item label {
+.mentee-appointment-requests-modal-form-item label {
   font-weight: 600; 
   color: #8e9291; 
   font-size: 13px;
   margin-bottom: 4px;
 }
-
-.mar-modal-form-item label {
-  font-weight: 600; 
-  color: #8e9291; 
-  font-size: 13px;
-}
-.mar-modal-text {
+.mentee-appointment-requests-modal-text {
   font-size: 14px; color: #fff; background: #232323;
   padding: 8px 12px; border-radius: 8px; border: 1px solid #444; margin: 0;
 }
-.mar-modal-form-item input.mar-modal-text {
+.mentee-appointment-requests-modal-form-item input.mentee-appointment-requests-modal-text {
   width: 100%;
   box-sizing: border-box;
   font-size: 14px;
@@ -193,15 +149,24 @@
   font-family: inherit;
   display: block;
 }
-.mar-modal-action-buttons {
-  display: flex; justify-content: flex-start; gap: 10px;
+.mentee-appointment-requests-modal-cancel-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 12px;
 }
-.mar-modal-button {
-  padding: 8px 16px; font-size: 13px; font-weight: 600;
-  border: none; border-radius: 8px; cursor: pointer;
-  transition: all 0.2s ease-in-out;
+
+.mentee-appointment-requests-modal-cancel-button {
+  background: #8e2e28;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-.mar-modal-button.approve { background: #006239; color: #fff; }
-.mar-modal-button.reject { background: #8e2e28; color: #fff; }
-.mar-modal-button.approve:hover { background: #39755b; }
-.mar-modal-button.reject:hover { background: #96433d; }
+
+.mentee-appointment-requests-modal-cancel-button:hover {
+  background: #b03a2e;
+}

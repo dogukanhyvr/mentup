@@ -29,6 +29,7 @@ import Navbar3 from './components/NavBar3/Navbar3';
 import MentorAppointments from './mentorPages/mentorAppointments/mentorAppointments';
 import MentorAvailabilitySettings from './mentorPages/mentorAvailabilitySettings/mentorAvailabilitySettings';
 import MentorAppointmentRequests from './mentorPages/mentorAppointmentRequests/mentorAppointmentRequests';
+import AppointmentRequests from './pages/appointmentRequests/appointmentRequests';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -108,7 +109,9 @@ function App() {
           path="/mentorappointmentrequests"
           element={<MentorAppointmentRequests />}
         />
+        <Route path="/appointmentrequests" element={<AppointmentRequests />} />
       </Routes>
+
     </div>
   );
 }
