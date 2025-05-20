@@ -21,13 +21,14 @@ import VideoChat from './pages/videochat/VideoChat';
 import AdminPanel from './admin/pages/adminPanel/adminPanel';
 import ForgotPassword from './pages/forgotPassword/ForgotPassword';
 import ResetPassword  from './pages/resetPassword/resetPassword';
-import ProtectedRoute from './components/ProtectedRoute'; // ProtectedRoute bileşenini ekleyin
+import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './pages/NotFound/NotFound';
 import MentorProfile from './mentorPages/mentorProfile/mentorProfile';
 import MentorAccountSettings from './mentorPages/mentorAccountSettings/mentorAccountsettings';
 import Navbar3 from './components/NavBar3/Navbar3';
 import MentorAppointments from './mentorPages/mentorAppointments/mentorAppointments';
 import MentorAvailabilitySettings from './mentorPages/mentorAvailabilitySettings/mentorAvailabilitySettings';
+import MentorAppointmentRequests from './mentorPages/mentorAppointmentRequests/mentorAppointmentRequests';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -91,7 +92,7 @@ function App() {
           }
         />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/reset-password"   element={<ResetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/notfound" element={<NotFound />} />
         <Route path="/mentorprofile" element={<MentorProfile />} />
         <Route
@@ -99,7 +100,14 @@ function App() {
           element={<MentorAccountSettings />}
         />
         <Route path="/mentorappointments" element={<MentorAppointments />} />
-          <Route path="/mentoravailabilitysettings" element={<MentorAvailabilitySettings />} />
+        <Route
+          path="/mentoravailabilitysettings"
+          element={<MentorAvailabilitySettings />}
+        />
+        <Route
+          path="/mentorappointmentrequests"
+          element={<MentorAppointmentRequests />}
+        />
       </Routes>
     </div>
   );

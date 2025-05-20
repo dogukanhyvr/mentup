@@ -219,6 +219,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-weight: bold;
 }
 
 .schedule-button:hover {
@@ -233,18 +234,77 @@
   gap: 8px;
 }
 
-.scheduler-panel select, 
-.scheduler-panel button {
-  padding: 6px;
-  border-radius: 4px;
+.scheduler-panel label {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #8e9291;
+  font-weight: 600;
 }
 
 .scheduler-panel button {
   cursor: pointer;
-  background-color: #4caf50;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #26815b;
+  background-color: #006239; 
+  color: #ffffff;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 25px;
+  font-weight: bold;
 }
 
 .scheduler-panel button:hover {
-  background-color: #72b175;
+  background-color: #217953;
 }
 
+.bm-custom-dropdown {
+  position: relative;
+  width: 260px;
+}
+
+.bm-custom-dropdown-label {
+  font-size: 15px;
+  color: #8e9291;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.bm-custom-dropdown-input {
+  min-width: 200px;
+  padding: 10px 12px;
+  background: #232323;
+  color: #fff;
+  border-radius: 8px;
+  border: 1px solid #444;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.bm-custom-dropdown-menu.upwards {
+  bottom: 100%;
+  top: auto;
+  left: 0;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  min-width: 200px;
+  background: #232323;
+  border: 1px solid #444;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  margin-bottom: 4px;
+}
+
+.bm-custom-dropdown-option {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+}
+
+.bm-custom-dropdown-option.selected,
+.bm-custom-dropdown-option:hover {
+  background: #2e473a;
+  color: #fff;
+}

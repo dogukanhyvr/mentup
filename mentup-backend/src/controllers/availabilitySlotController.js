@@ -42,3 +42,16 @@ exports.getAvailability = async (req, res) => {
     res.status(500).json({ message: "Slotlar alınamadı.", error: err.message });
   }
 };
+
+exports.getMentorAvailability = async (req, res) => {
+  try {
+    const { user_id } = req.params; // mentorId yerine user_id
+    const slots = await AvailabilitySlot.findAll({
+      where: { user_id },
+      order: [['date', 'ASC'], ['start_time', 'ASC']]
+    });
+    res.json({ slots });
+  } catch (err) {
+    res.status(500).json({ message: "Slotlar alınamadı.", error: err.message });
+  }
+};

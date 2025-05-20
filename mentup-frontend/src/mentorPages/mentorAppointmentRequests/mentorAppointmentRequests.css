@@ -1,0 +1,117 @@
+.appointment-requests-container {
+  /* background: linear-gradient(168.18deg, #101828 22.59%, #6938ef 85.64%), linear-gradient(137.87deg, #101828 37.36%, #8619f5 80.62%); */
+  background-color: #121212;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.appointment-requests-contanet-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.appointment-requests-title {
+  font-size: 28px;
+  color: #fff;
+  margin-left: 40px;
+  margin-top: 40px;
+}
+
+.appointment-requests-cards {
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+  margin-top: 20px ;
+}
+
+.appointment-requests-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 45%;
+  height: 200px;
+  background-color: #171717;
+  border: 1px solid rgb(59, 59, 59);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+}
+
+.appointment-requests-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background-image: url('../../images/mentor.png');
+  background-size: cover;
+  background-position: center; 
+  margin-right: 20px;
+  flex-shrink: 0;
+  margin: 20px;
+  margin-right: 20px;
+}
+
+.appointment-requests-info-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.appointment-requests-info-title {
+  font-size: 20px;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.appointment-requests-name {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.appointment-requests-description {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #8e9291;
+}
+
+.appointment-requests-button-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 30px;
+}
+
+.appointment-requests-button-div button {
+  width: 120px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 25px;
+}
+
+.appointment-requests-approve-button {
+  background-color: #006239;
+}
+
+.appointment-requests-approve-button:hover {
+  background-color: #217953;
+}
+
+.appointment-requests-reject-button {
+  background-color: #8e2e28;
+}
+
+.appointment-requests-reject-button:hover {
+  background-color: #96433d;
+}

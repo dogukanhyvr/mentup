@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-// CustomDropdown sadece dropdown menü için
+// Çoklu seçimli custom dropdown menu
 const CustomDropdownMenu = ({ options, selectedOptions, setSelectedOptions }) => {
   const handleOptionClick = (option) => {
     if (selectedOptions.includes(option)) {
@@ -29,6 +29,55 @@ const CustomDropdownMenu = ({ options, selectedOptions, setSelectedOptions }) =>
   );
 };
 
+// Tekli seçimli custom dropdown menu (BrowseMentors'a özel)
+const BmSingleSelectDropdown = ({ options, selectedOption, setSelectedOption, label }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (!event.target.closest(".bm-custom-dropdown")) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
+  return (
+    <div className="bm-custom-dropdown">
+      <label className="bm-custom-dropdown-label">{label}</label>
+      <div className="bm-custom-dropdown-input" onClick={toggleDropdown}>
+        {selectedOption?.label || "Seçim yapın"}
+      </div>
+      {isOpen && (
+        <div className="bm-custom-dropdown-menu upwards">
+          {options.map((option, index) => (
+            <div
+              key={option.value}
+              className={`bm-custom-dropdown-option ${
+                selectedOption && selectedOption.value === option.value ? "selected" : ""
+              }`}
+              onClick={() => handleOptionClick(option)}
+            >
+              {option.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const BrowseMentors = () => {
   const [loading, setLoading] = useState(false);
   const [openMenuIndex, setOpenMenuIndex] = useState(null);
@@ -36,12 +85,10 @@ const BrowseMentors = () => {
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [mentors, setMentors] = useState([]);
+  const [mentorSlots, setMentorSlots] = useState([]);
+  const [selectedMentor, setSelectedMentor] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState("");
   const [showScheduler, setShowScheduler] = useState(false);
-  const [selectedDate, setSelectedDate] = useState({
-    month: "",
-    day: "",
-    time: "",
-  });
 
   const menuRef = useRef(null);
 
@@ -93,8 +140,6 @@ const BrowseMentors = () => {
       .get("http://localhost:5001/mentor/filterMentors", {
         params: {
           skills: [...selectedSkills, ...selectedLanguages].join(","),
-          // skills: selectedSkills.join(","),
-          // languages: selectedLanguages.join(","),
           search: searchTerm
         }
       })
@@ -116,17 +161,32 @@ const BrowseMentors = () => {
 
   const handleSearch = () => {};
 
-  const handleScheduleClick = () => {
-    setShowScheduler(!showScheduler);
+  const handleScheduleClick = async (mentor) => {
+    setSelectedMentor(mentor);
+    setShowScheduler(true);
+    setMentorSlots([]);
+    setSelectedSlot("");
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        `http://localhost:5001/mentor/availability/getMentorAvailability/${mentor.user_id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      setMentorSlots(res.data.slots);
+    } catch (err) {
+      setMentorSlots([]);
+      alert("Mentorun müsaitlikleri alınamadı.");
+    }
   };
-  const handleDateChange = (e) => {
-    setSelectedDate({
-      ...selectedDate,
-      [e.target.name]: e.target.value,
-    });
-  };
+
   const handleConfirm = () => {
-    alert("Planlanan Görüşme: " + JSON.stringify(selectedDate));
+    if (!selectedSlot) {
+      alert("Lütfen bir müsaitlik seçin.");
+      return;
+    }
+    alert("Seçilen Slot ID: " + selectedSlot);
     setShowScheduler(false);
   };
 
@@ -227,30 +287,45 @@ const BrowseMentors = () => {
                       <p className="mentor-description">{mentor.bio}</p>
                     </div>
                     <div className="mentor-actions">
-                      <button onClick={handleScheduleClick} className="schedule-button">
+                      <button
+                        onClick={() => handleScheduleClick(mentor)}
+                        className="schedule-button"
+                      >
                         Görüşme Planla
                       </button>
-                      {showScheduler && (
+                      {showScheduler && selectedMentor && selectedMentor.user_id === mentor.user_id && (
                         <div className="scheduler-panel">
-                          <select name="month" onChange={handleDateChange} defaultValue="">
-                            <option value="" disabled>Ay Seç</option>
-                            <option value="Nisan">Nisan</option>
-                            <option value="Mayıs">Mayıs</option>
-                          </select>
-                          <select name="day" onChange={handleDateChange} defaultValue="">
-                            <option value="" disabled>Gün Seç</option>
-                            {[...Array(31)].map((_, i) => (
-                              <option key={i} value={i + 1}>{i + 1}</option>
-                            ))}
-                          </select>
-                          <select name="time" onChange={handleDateChange} defaultValue="">
-                            <option value="" disabled>Saat Seç</option>
-                            <option value="10:00">10:00-10.30</option>
-                            <option value="13:00">13:00-13.30</option>
-                            <option value="16:00">16:00-16.30</option>
-                            <option value="19:00">19:00-19.30</option>
-                          </select>
-                          <button onClick={handleConfirm}>Onayla</button>
+                          <BmSingleSelectDropdown
+                            label="Müsaitlik Seç"
+                            options={mentorSlots.map((slot) => {
+                              const date = new Date(`${slot.date}T${slot.start_time}`);
+                              const dayName = date.toLocaleDateString("tr-TR", { weekday: "long" });
+                              const dateStr = date.toLocaleDateString("tr-TR");
+                              const startTime = slot.start_time.slice(0, 5);
+                              const endTime = slot.end_time.slice(0, 5);
+                              return {
+                                value: slot.slot_id,
+                                label: `${dateStr} ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${startTime}-${endTime}`,
+                              };
+                            })}
+                            selectedOption={
+                              mentorSlots
+                                .map((slot) => {
+                                  const date = new Date(`${slot.date}T${slot.start_time}`);
+                                  const dayName = date.toLocaleDateString("tr-TR", { weekday: "long" });
+                                  const dateStr = date.toLocaleDateString("tr-TR");
+                                  const startTime = slot.start_time.slice(0, 5);
+                                  const endTime = slot.end_time.slice(0, 5);
+                                  return {
+                                    value: slot.slot_id,
+                                    label: `${dateStr} ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${startTime}-${endTime}`,
+                                  };
+                                })
+                                .find((opt) => opt.value === selectedSlot) || null
+                            }
+                            setSelectedOption={(option) => setSelectedSlot(option.value)}
+                          />
+                          <button onClick={handleConfirm}>Görüşme Talebinde Bulun</button>
                         </div>
                       )}
                     </div>
