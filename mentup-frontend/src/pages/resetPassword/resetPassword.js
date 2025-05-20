@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './resetPassword.css';
 
 export default function ResetPassword() {
@@ -6,6 +7,7 @@ export default function ResetPassword() {
   const [passwordAgain, setPasswordAgain] = useState('');
   const [message, setMessage] = useState('');
   const [token, setToken] = useState('');
+  const navigate = useNavigate();
 
   // Query’den token’ı al
   useEffect(() => {
@@ -31,8 +33,11 @@ export default function ResetPassword() {
       setMessage(data.message);
     } else {
       setMessage('Şifreniz başarıyla değiştirildi.');
+      navigate("/login");
     }
   };
+
+  
 
   return (
     <div>
@@ -62,7 +67,11 @@ export default function ResetPassword() {
                 onChange={e => setPasswordAgain(e.target.value)}
                 required
               />
-              <button type="submit">Gönder</button>
+              <button 
+                type="submit"
+                >
+                Gönder
+                </button>
               {message && <p style={{ color: message.includes('başarı') ? 'green' : 'red' }}>
                 {message}
               </p>}
