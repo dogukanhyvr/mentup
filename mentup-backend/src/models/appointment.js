@@ -19,6 +19,19 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
       updatedAt: 'updated_at',
     });
+
+    Appointment.beforeCreate(async (appointment, options) => {
+      const mentor = await sequelize.models.User.findOne({ where: { id: appointment.mentor_id, role: 'mentor' } });
+      const mentee = await sequelize.models.User.findOne({ where: { id: appointment.mentee_id, role: 'mentee' } });
+    
+      if (!mentor) {
+        throw new Error('mentor_id must belong to a user with role "mentor"');
+      }
+    
+      if (!mentee) {
+        throw new Error('mentee_id must belong to a user with role "mentee"');
+      }
+    });
   
     Appointment.associate = (models) => {
         Appointment.belongsTo(models.User, { foreignKey: 'mentor_id', as: 'mentor' });
