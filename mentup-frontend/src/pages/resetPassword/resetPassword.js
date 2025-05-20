@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './resetPassword.css';
+import NavBar from '../../components/NavBar/NavBar';
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');

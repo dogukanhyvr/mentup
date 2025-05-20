@@ -47,7 +47,7 @@ function App() {
     }
   }, [location]);
 
-  const noNavbarRoutes = ['/login', '/signup', '/forgotpassword', '/reset-password', '/notfound'];
+  const noNavbarRoutes = ['/login', '/signup', '/forgotpassword', '/notfound'];
 
   // Navbar seçimi
   let navbarComponent = null;
@@ -59,7 +59,7 @@ function App() {
     } else if (role === "mentor") {
       navbarComponent = <Navbar3 />;
     } else if (role === "admin") {
-      navbarComponent = <Navbar2 />; // Şimdilik admin için de Navbar2
+      navbarComponent = <Navbar2 />;
     }
   }
 
