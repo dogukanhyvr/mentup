@@ -47,7 +47,7 @@ function App() {
     }
   }, [location]);
 
-  const noNavbarRoutes = ['/login', '/signup', '/forgotpassword'];
+  const noNavbarRoutes = ['/login', '/signup', '/forgotpassword', '/reset-password', '/notfound'];
 
   // Navbar seçimi
   let navbarComponent = null;

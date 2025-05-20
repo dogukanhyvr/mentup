@@ -287,12 +287,19 @@ const BrowseMentors = () => {
                       <p className="mentor-description">{mentor.bio}</p>
                     </div>
                     <div className="mentor-actions">
-                      <button
-                        onClick={() => handleScheduleClick(mentor)}
-                        className="schedule-button"
-                      >
-                        Görüşme Planla
-                      </button>
+                      <div className="browse-mentors-mentor-buttons">
+                        <button
+                          onClick={() => handleScheduleClick(mentor)}
+                          className="schedule-button"
+                        >
+                          Görüşme Planla
+                        </button>
+                        <button 
+                          className="browse-mentors-message-button"
+                          >
+                          Mesaj At
+                          </button>
+                      </div>
                       {showScheduler && selectedMentor && selectedMentor.user_id === mentor.user_id && (
                         <div className="scheduler-panel">
                           <BmSingleSelectDropdown

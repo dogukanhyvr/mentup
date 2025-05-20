@@ -211,9 +211,15 @@
   min-height: 60px;
 }
 
-.schedule-button {
+.browse-mentors-mentor-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.browse-mentors-mentor-buttons button {
   padding: 8px 12px;
-  background-color: rgb(255, 144, 16);
   color: white;
   border: none;
   border-radius: 6px;
@@ -222,10 +228,20 @@
   font-weight: bold;
 }
 
+.schedule-button {
+  background-color: rgb(255, 144, 16);
+}
+
 .schedule-button:hover {
   background-color: rgb(255, 177, 88);
-
 }
+
+.browse-mentors-message-button {
+  background-color: #006239;
+}
+
+.browse-mentors-message-button:hover {
+  background-color: #217953;}
 
 .scheduler-panel {
   display: flex;
