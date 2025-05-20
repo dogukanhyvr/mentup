@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./mentorAppointmentRequests.css";
 
 const MentorAppointmentRequests = () => {
@@ -6,37 +7,49 @@ const MentorAppointmentRequests = () => {
   const [modalReq, setModalReq] = useState(null);
 
   useEffect(() => {
-    // Örnek veri
-    setRequests([
-      {
-        request_id: 1,
-        mentee: {
-          name: "Ayşe",
-          surname: "Yılmaz",
-          skills: ["Python", "JavaScript"],
-          photo_url: "/images/mentee.png"
-        },
-        slot: {
-          date: "2025-05-25",
-          start_time: "19:00",
-          end_time: "19:30"
-        },
-        meeting_reason: "Yeni web sitemin tasarımını geliştirme"
-      },
-      // ... diğer talepler
-    ]);
+    const fetchRequests = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:5001/appointments/getMentorAppointmentRequest", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // API'den gelen veriyi uygun formata dönüştür
+        const formatted = res.data.map((item) => ({
+          request_id: item.id,
+          mentee: {
+            name: item.mentee?.name || "",
+            surname: item.mentee?.surname || "",
+            skills: item.mentee?.profile?.skills
+              ? JSON.parse(item.mentee.profile.skills)
+              : [],
+            photo_url: item.mentee?.profile?.photo_url || "/images/mentee.png",
+            bio: item.mentee?.profile?.bio || "",
+          },
+          slot: {
+            date: item.scheduled_date,
+            start_time: item.start_time,
+            end_time: item.end_time,
+          },
+          meeting_reason: item.description,
+        }));
+        setRequests(formatted);
+      } catch (err) {
+        setRequests([]);
+      }
+    };
+    fetchRequests();
   }, []);
 
   const openModal = (req) => setModalReq(req);
   const closeModal = () => setModalReq(null);
 
   const handleApprove = (requestId) => {
-    // Onayla işlemi (şimdilik sadece kapat)
+    // Onayla işlemi (backend'e istek atılabilir)
     closeModal();
   };
 
   const handleReject = (requestId) => {
-    // Reddet işlemi (şimdilik sadece kapat)
+    // Reddet işlemi (backend'e istek atılabilir)
     closeModal();
   };
 
@@ -77,7 +90,7 @@ const MentorAppointmentRequests = () => {
                     })}
                   </p>
                   <p>
-                    {req.slot.start_time} - {req.slot.end_time}
+                    {req.slot.start_time?.slice(0, 5)} - {req.slot.end_time?.slice(0, 5)}
                   </p>
                 </div>
               </div>
@@ -116,7 +129,7 @@ const MentorAppointmentRequests = () => {
               <label>Biyografi</label>
               <input
                 className="mar-modal-text"
-                value={"Kariyerine yeni başlayan bir yazılımcı."}
+                value={modalReq.mentee.bio || "Biyografi bulunamadı."}
                 readOnly
                 style={{ background: "#232323", color: "#fff", border: "1px solid #444" }}
               />
@@ -143,7 +156,7 @@ const MentorAppointmentRequests = () => {
                   year: "numeric",
                 })}{" "}
                 <br />
-                {modalReq.slot.start_time} - {modalReq.slot.end_time}
+                {modalReq.slot.start_time?.slice(0, 5)} - {modalReq.slot.end_time?.slice(0, 5)}
               </p>
             </div>
             <div className="mar-modal-action-buttons">
@@ -159,7 +172,6 @@ const MentorAppointmentRequests = () => {
               >
                 Talebi Onayla
               </button>
-
             </div>
           </div>
         </div>

@@ -3,27 +3,30 @@ const { Appointment, User } = require('../models');
 // Görüşme talebi oluşturma
 exports.createAppointment = async (req, res) => {
   try {
-	const { mentor_id, scheduled_at } = req.body;
-	const mentee_id = req.user.id; // Giriş yapan mentee'nin ID'si
+    const { mentor_id, scheduled_date, start_time, end_time, description } = req.body;
+    const mentee_id = req.user.id; // Giriş yapan mentee'nin ID'si
 
-	// Mentorun varlığını kontrol et
-	const mentor = await User.findOne({ where: { id: mentor_id, role: 'mentor' } });
-	if (!mentor) {
-	  return res.status(404).json({ message: 'Mentor bulunamadı.' });
-	}
+    // Mentorun varlığını kontrol et
+    const mentor = await User.findOne({ where: { id: mentor_id, role: 'mentor' } });
+    if (!mentor) {
+      return res.status(404).json({ message: 'Mentor bulunamadı.' });
+    }
 
-	// Randevu oluştur
-	const appointment = await Appointment.create({
-	  mentor_id,
-	  mentee_id,
-	  scheduled_at,
-	  status: 'pending',
-	});
+    // Randevu oluştur
+    const appointment = await Appointment.create({
+      mentor_id,
+      mentee_id,
+      scheduled_date,
+      start_time,
+      end_time,
+      description,
+      status: 'pending',
+    });
 
-	res.status(201).json(appointment);
+    res.status(201).json(appointment);
   } catch (err) {
-	console.error('Randevu oluşturulamadı:', err);
-	res.status(500).json({ message: 'Randevu oluşturulurken hata oluştu.' });
+    console.error('Randevu oluşturulamadı:', err);
+    res.status(500).json({ message: 'Randevu oluşturulurken hata oluştu.' });
   }
 };
 
@@ -58,19 +61,30 @@ exports.updateAppointmentStatus = async (req, res) => {
 // Mentorun gelen taleplerini listeleme
 exports.getMentorAppointments = async (req, res) => {
   try {
-	const mentor_id = req.user.id; // Giriş yapan mentorun ID'si
+    const mentor_id = req.user.id; // Giriş yapan mentorun ID'si
 
-	const appointments = await Appointment.findAll({
-	  where: { mentor_id },
-	  include: [
-		{ model: User, as: 'mentee', attributes: ['id', 'name', 'surname', 'email'] },
-	  ],
-	});
+    const appointments = await Appointment.findAll({
+      where: { mentor_id },
+      include: [
+        {
+          model: User,
+          as: 'mentee',
+          attributes: ['id', 'name', 'surname', 'email'],
+          include: [
+            {
+              model: require('../models').Profile,
+              as: 'profile',
+              attributes: ['bio', 'photo_url', 'skills'],
+            },
+          ],
+        },
+      ],
+    });
 
-	res.status(200).json(appointments);
+    res.status(200).json(appointments);
   } catch (err) {
-	console.error('Mentorun randevuları alınamadı:', err);
-	res.status(500).json({ message: 'Randevular alınırken hata oluştu.' });
+    console.error('Mentorun randevuları alınamadı:', err);
+    res.status(500).json({ message: 'Randevular alınırken hata oluştu.' });
   }
 };
 

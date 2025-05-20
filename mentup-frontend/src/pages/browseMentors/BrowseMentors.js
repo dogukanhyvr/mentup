@@ -187,7 +187,7 @@ const BrowseMentors = () => {
     setMeetingReason("");
   };
 
-  const handleModalConfirm = () => {
+  const handleModalConfirm = async () => {
     if (!selectedSlot) {
       alert("Lütfen bir müsaitlik seçin.");
       return;
@@ -196,11 +196,30 @@ const BrowseMentors = () => {
       alert("Lütfen görüşme sebebinizi yazın.");
       return;
     }
-    // Burada backend'e görüşme talebi gönderilebilir
-    alert(
-      `Görüşme talebi gönderildi!\nSlot: ${selectedSlot}\nSebep: ${meetingReason}`
-    );
-    closeMentorModal();
+    try {
+      const token = localStorage.getItem("token");
+      // Seçilen slotun detaylarını bul
+      const slot = mentorSlots.find(s => s.slot_id === selectedSlot);
+      if (!slot) {
+        alert("Seçilen slot bulunamadı.");
+        return;
+      }
+      await axios.post(
+        "http://localhost:5001/appointments/createAppointment",
+        {
+          mentor_id: modalMentor.user_id || modalMentor.id,
+          scheduled_date: slot.date,
+          start_time: slot.start_time,
+          end_time: slot.end_time,
+          description: meetingReason,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Görüşme talebiniz gönderildi!");
+      closeMentorModal();
+    } catch (err) {
+      alert("Bir hata oluştu, lütfen tekrar deneyin.");
+    }
   };
 
   useEffect(() => {

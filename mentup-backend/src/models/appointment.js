@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       mentor_id: { type: DataTypes.UUID, allowNull: false },
       mentee_id: { type: DataTypes.UUID, allowNull: false },
-      scheduled_at: { type: DataTypes.DATE, allowNull: false },
+      scheduled_date: { type: DataTypes.DATE, allowNull: false },
       start_time: { type: DataTypes.TIME, allowNull: false },
       end_time: { type: DataTypes.TIME, allowNull: false },
       description: {type: DataTypes.TEXT, allowNull: true },
