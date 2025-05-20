@@ -38,48 +38,49 @@ export default function ResetPassword() {
     }
   };
 
-  
-
   return (
-    <div>
-      <div className='reset-password-container'>
-        <div className='login-logo-name'>
-          <a href='/home'>MentUp</a>
-        </div>
-        <div className='reset-password-box'>
-          <h1 className='reset-password-title'>Şifreni Sıfırla</h1>
-          <form onSubmit={handleSubmit}>
-            <div className='reset-password-input-group'>
-              <label htmlFor="password">Yeni Şifre</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="******"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
-              <label htmlFor="passwordAgain">Yeni Şifre (tekrar)</label>
-              <input
-                type="password"
-                id="passwordAgain"
-                placeholder="******"
-                value={passwordAgain}
-                onChange={e => setPasswordAgain(e.target.value)}
-                required
-              />
-              <button 
-                type="submit"
-                >
-                Gönder
-                </button>
-              {message && <p style={{ color: message.includes('başarı') ? 'green' : 'red' }}>
-                {message}
-              </p>}
-            </div>
-          </form>
+    <>
+      <header>
+        <NavBar />
+      </header>
+      <div>
+        <div className='reset-password-container'>
+          <div className='login-logo-name'>
+            <a href='/home'>MentUp</a>
+          </div>
+          <div className='reset-password-box'>
+            <h1 className='reset-password-title'>Şifreni Sıfırla</h1>
+            <form onSubmit={handleSubmit}>
+              <div className='reset-password-input-group'>
+                <label htmlFor="password">Yeni Şifre</label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="******"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
+                <label htmlFor="passwordAgain">Yeni Şifre (tekrar)</label>
+                <input
+                  type="password"
+                  id="passwordAgain"
+                  placeholder="******"
+                  value={passwordAgain}
+                  onChange={e => setPasswordAgain(e.target.value)}
+                  required
+                />
+                <button type="submit">Gönder</button>
+                {message && (
+                  <p style={{ color: message.includes('başarı') ? 'green' : 'red' }}>
+                    {message}
+                  </p>
+                )}
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
