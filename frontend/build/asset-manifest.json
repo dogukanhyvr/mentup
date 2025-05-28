@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3641074a.css",
+    "main.js": "/static/js/main.1dd77f9a.js",
+    "static/js/488.e75445ad.chunk.js": "/static/js/488.e75445ad.chunk.js",
+    "static/media/mentor.png": "/static/media/mentor.ffe5a5c7178dc074bb4a.png",
+    "static/media/mentup-logo.png": "/static/media/mentup-logo.7fed8a75f416620302d1.png",
+    "index.html": "/index.html",
+    "main.3641074a.css.map": "/static/css/main.3641074a.css.map",
+    "main.1dd77f9a.js.map": "/static/js/main.1dd77f9a.js.map",
+    "488.e75445ad.chunk.js.map": "/static/js/488.e75445ad.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3641074a.css",
+    "static/js/main.1dd77f9a.js"
+  ]
+}
