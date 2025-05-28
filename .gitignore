@@ -22,7 +22,7 @@ coverage
 .nyc_output
 
 # Build / cache / binaries
-build/
+# build/ ← Bu satır kaldırıldı!
 build/Release
 dist/
 .cache/
@@ -86,8 +86,8 @@ Desktop.ini
 # Frontend specific
 mentup-frontend/node_modules/
 mentup-frontend/dist/
-mentup-frontend/build/
-mentup-frontend/.env
+# mentup-frontend/build/ ← Artık takip edilecek!
+# mentup-frontend/.env ← Takibe alınıyor
 mentup-frontend/.cache/
 
 # Backend specific

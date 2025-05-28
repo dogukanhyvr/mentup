@@ -1,18 +1,33 @@
 require('dotenv').config(); // .env dosyasını yükler
+const express = require('express');
+const cors = require('cors');
 const app = require('./src/app');
 const sequelize = require('./src/config/database'); // Sequelize bağlantı dosyanız
 const http = require('http');
 const { Server } = require('socket.io');
 
-const PORT = process.env.PORT || 5001; // .env dosyasındaki PORT'u kullanır
+// PORT
+const PORT = process.env.PORT || 5001;
 
-const server = http.createServer(app); // express app'i HTTP sunucuya sar
+// CORS ayarı
+app.use(cors({
+  origin: 'https://mentup-frontend.onrender.com', // Render'daki frontend URL'in
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// JSON gövdesini tanı
+app.use(express.json());
+
+// HTTP sunucu oluştur
+const server = http.createServer(app);
 
 // Socket.IO kurulumu
 const io = new Server(server, {
   cors: {
-    origin: "*", // test aşamasında her yerden erişim
-    methods: ["GET", "POST"]
+    origin: 'https://mentup-frontend.onrender.com',
+    methods: ['GET', 'POST']
   }
 });
 
@@ -37,15 +52,14 @@ io.on('connection', (socket) => {
   });
 });
 
-// Veritabanını senkronize et
+// Veritabanını senkronize et ve sunucuyu başlat
 (async () => {
   try {
-    await sequelize.sync({ force: false }); // force: true tüm tabloları sıfırlar, dikkatli kullanın
+    await sequelize.sync({ force: false });
     console.log('Database synchronized successfully.');
 
-    // Sunucuyu başlat
     server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
 
   } catch (error) {
