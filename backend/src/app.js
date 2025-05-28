@@ -16,9 +16,11 @@ const app = express();
 
 // ✅ CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // Frontend adresiniz
+  origin: ['http://localhost:3000', 'http://192.168.1.23:3000'],
   credentials: true
 }));
+
+
 
 // ✅ JSON body limit artırıldı
 app.use(express.json({ limit: '10mb' }));
