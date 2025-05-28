@@ -1,42 +1,49 @@
-require('dotenv').config(); // .env dosyasını yükler
+require('dotenv').config(); // .env dosyasını yükle
 const express = require('express');
 const cors = require('cors');
-const app = require('./src/app');
-const sequelize = require('./src/config/database'); // Sequelize bağlantı dosyanız
 const http = require('http');
 const { Server } = require('socket.io');
+const sequelize = require('./src/config/database'); // Sequelize bağlantı dosyası
+const app = require('./src/app');
 
-// PORT
 const PORT = process.env.PORT || 5001;
 
-// CORS ayarı
+// 🔹 1. CORS yapılandırması
+const allowedOrigins = [
+  'http://localhost:3000', // Geliştirme ortamı için
+  'https://mentup-frontend.onrender.com' // Render'daki frontend adresin
+];
+
 app.use(cors({
-  origin: 'https://mentup-frontend.onrender.com', // Render'daki frontend URL'in
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// JSON gövdesini tanı
+// 🔹 2. JSON verilerini parse etmek için
 app.use(express.json());
 
-// HTTP sunucu oluştur
+// 🔹 3. Basit kök route kontrolü (isteğe bağlı)
+app.get('/', (req, res) => {
+  res.send('MentUp backend çalışıyor 🚀');
+});
+
+// 🔹 4. HTTP sunucusu ve Socket.IO entegrasyonu
 const server = http.createServer(app);
 
-// Socket.IO kurulumu
 const io = new Server(server, {
   cors: {
-    origin: 'https://mentup-frontend.onrender.com',
+    origin: allowedOrigins,
     methods: ['GET', 'POST']
   }
 });
 
-// Socket olayları
 io.on('connection', (socket) => {
-  console.log('Kullanıcı bağlandı:', socket.id);
+  console.log('🔌 Kullanıcı bağlandı:', socket.id);
 
   socket.on('disconnect', () => {
-    console.log('Kullanıcı ayrıldı:', socket.id);
+    console.log('❌ Kullanıcı ayrıldı:', socket.id);
   });
 
   socket.on('callUser', (data) => {
@@ -52,17 +59,17 @@ io.on('connection', (socket) => {
   });
 });
 
-// Veritabanını senkronize et ve sunucuyu başlat
+// 🔹 5. Veritabanı senkronizasyonu ve sunucu başlatma
 (async () => {
   try {
     await sequelize.sync({ force: false });
-    console.log('Database synchronized successfully.');
+    console.log('✅ Veritabanı senkronize edildi.');
 
     server.listen(PORT, '0.0.0.0', () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`✅ Sunucu çalışıyor: http://localhost:${PORT}`);
     });
 
   } catch (error) {
-    console.error('Error synchronizing the database:', error);
+    console.error('❌ Veritabanı hatası:', error);
   }
 })();
