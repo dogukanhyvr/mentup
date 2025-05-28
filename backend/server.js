@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
 
     // Sunucuyu başlat
     server.listen(PORT, '0.0.0.0', () => {
-      console.log(`Server running on http://192.168.1.23:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
     });
 
   } catch (error) {
